@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manjunath | AI Engineer & Agentic Coder — Keyboard Portfolio</title>
+  <meta name="description" content="Manjunath - AI Engineer & Agentic Coder. Tactile Keyboard Portfolio showcasing AI/ML Architecture, LLM Systems, Computer Vision & Scalable Software.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Devicon & Lucide Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Three.js for Background Particle Canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Person JSON-LD Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Manjunath",
+    "jobTitle": "AI Engineer & Agentic Coder",
+    "alumniOf": "JKKMCT",
+    "degree": "B.Tech in Artificial Intelligence and Data Science",
+    "url": "https://github.com/Manju1303",
+    "sameAs": [
+      "https://github.com/Manju1303",
+      "https://www.linkedin.com/in/manjunath-manjunath-248594352",
+      "https://www.instagram.com/mjx_1303"
+    ],
+    "knowsAbout": [
+      "Artificial Intelligence",
+      "Large Language Models",
+      "Computer Vision",
+      "RAG Systems",
+      "Vector DBs",
+      "MediaPipe",
+      "OpenCV",
+      "Python",
+      "React",
+      "Full-Stack Web Development"
+    ]
+  }
+  </script>
+</head>
+<body class="theme-cyberpunk">
+
+  <!-- Background WebGL Canvas -->
+  <canvas id="bgCanvas"></canvas>
+  <div class="grid-overlay"></div>
+  <div class="scanline"></div>
+
+  <!-- Clockwork Iris Loader Entry Screen -->
+  <div id="clockworkLoader" class="clockwork-loader">
+    <div class="iris-wrapper">
+      <div class="iris-ring iris-ring-outer"></div>
+      <div class="iris-ring iris-ring-middle"></div>
+      <div class="iris-ring iris-ring-inner"></div>
+      <div class="iris-blades">
+        <div class="blade b1"></div>
+        <div class="blade b2"></div>
+        <div class="blade b3"></div>
+        <div class="blade b4"></div>
+        <div class="blade b5"></div>
+        <div class="blade b6"></div>
+      </div>
+      <div class="iris-core">
+        <div class="core-logo">MJ<span class="core-dot">_</span>ZXC</div>
+        <div class="core-status" id="loaderStatus">INITIALIZING SWITCHES...</div>
+        <div class="core-bar-track">
+          <div class="core-bar-fill" id="loaderFill"></div>
+        </div>
+      </div>
+    </div>
+    <div class="audio-prompt-banner">
+      <p><i data-lucide="volume-2"></i> Sound Effects Enabled for Tactile Mechanical Feedback</p>
+      <button id="enterPortfolioBtn" class="btn btn-enter">
+        <span>ENTER WORKSPACE</span>
+        <i data-lucide="corner-down-left"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="key-badge">ZXC</span>
+        <span class="logo-text">MANJUNATH<span class="accent-dot">.</span></span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-menu">
+        <a href="#hero" class="nav-link active" data-section="hero">
+          <span class="key-hint">ESC</span> Home
+        </a>
+        <a href="#projects" class="nav-link" data-section="projects">
+          <span class="key-hint">Z</span> Projects
+        </a>
+        <a href="#skills" class="nav-link" data-section="skills">
+          <span class="key-hint">X</span> Skills
+        </a>
+        <a href="#contact" class="nav-link" data-section="contact">
+          <span class="key-hint">C</span> Contact
+        </a>
+      </nav>
+
+      <!-- Right Controls -->
+      <div class="nav-actions">
+        <!-- Mechanical Sound Profile Switcher -->
+        <div class="sound-control-group">
+          <button id="audioToggleBtn" class="nav-icon-btn active" title="Toggle Mechanical Key Sound (Mute/Unmute)">
+            <i data-lucide="volume-2" id="audioIcon"></i>
+          </button>
+          <select id="soundProfileSelect" class="sound-select" title="Mechanical Switch Sound Profile">
+            <option value="thock">Thocky Linear</option>
+            <option value="clicky">Blue Clicky</option>
+            <option value="silent">Silent Red</option>
+          </select>
+        </div>
+
+        <!-- Color Theme Switcher -->
+        <button id="themeToggleBtn" class="nav-icon-btn" title="Cycle Lighting Preset (Cyberpunk / Matrix / Stealth / Retro)">
+          <i data-lucide="palette"></i>
+        </button>
+
+        <!-- Command Palette Shortcut Button -->
+        <button id="cmdPaletteBtn" class="nav-cmd-btn" title="Open Mechanical Terminal (Ctrl+K)">
+          <i data-lucide="terminal"></i>
+          <span class="shortcut">Ctrl+K</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobileNavBtn" class="nav-icon-btn mobile-only">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobileDrawer" class="mobile-drawer">
+    <a href="#hero" class="mobile-link">Home (ESC)</a>
+    <a href="#projects" class="mobile-link">Projects [Z]</a>
+    <a href="#skills" class="mobile-link">Skills [X]</a>
+    <a href="#contact" class="mobile-link">Contact [C]</a>
+  </div>
+
+  <main>
+    <!-- HERO SECTION: 3D MECHANICAL KEYBOARD DECK -->
+    <section id="hero" class="hero-section">
+      <div class="hero-header-badge">
+        <span class="status-indicator">
+          <span class="pulse-dot"></span>
+          KEYBOARD CONNECTED (1000Hz POLLING)
+        </span>
+        <span class="tech-tag">B.TECH AI & DATA SCIENCE</span>
+      </div>
+
+      <div class="hero-intro-text">
+        <h1 class="hero-title">
+          MANJUNATH
+          <span class="hero-subtitle">AI ENGINEER & AGENTIC CODER</span>
+        </h1>
+        <p class="hero-bio">
+          Crafting scalable AI systems, LLM-powered agent workflows, and real-time computer vision engines. 
+          Use your physical keyboard or tap below to interact with this tactile workspace.
+        </p>
+      </div>
+
+      <!-- KEYBOARD SHORTCUT NAVIGATION BAR -->
+      <div class="keyboard-nav-bar">
+        <div class="shortcut-pill" data-key="KeyZ">
+          <span class="key-cap-mini">Z</span>
+          <span class="shortcut-label">Projects Showcase</span>
+        </div>
+        <div class="shortcut-pill" data-key="KeyX">
+          <span class="key-cap-mini">X</span>
+          <span class="shortcut-label">Core Competencies</span>
+        </div>
+        <div class="shortcut-pill" data-key="KeyC">
+          <span class="key-cap-mini">C</span>
+          <span class="shortcut-label">Contact Desk</span>
+        </div>
+        <div class="shortcut-pill" data-key="Space">
+          <span class="key-cap-mini space-mini">SPACE</span>
+          <span class="shortcut-label">RGB Ripple Wave</span>
+        </div>
+        <div class="shortcut-pill" data-key="Escape">
+          <span class="key-cap-mini">ESC</span>
+          <span class="shortcut-label">Pulse Iris</span>
+        </div>
+      </div>
+
+      <!-- TACTILE 3D MECHANICAL KEYBOARD DECK -->
+      <div class="keyboard-wrapper">
+        <div class="keyboard-bevel">
+          <div class="keyboard-plate">
+            
+            <!-- ROW 1: ESC + NUMBERS + BACKSPACE -->
+            <div class="keyboard-row">
+              <div class="keykey key-esc accent-key" data-key="Escape">
+                <span class="key-legend">ESC</span>
+                <span class="key-sub">RESET</span>
+              </div>
+              <div class="keykey" data-key="Digit1"><span class="key-legend">1</span></div>
+              <div class="keykey" data-key="Digit2"><span class="key-legend">2</span></div>
+              <div class="keykey" data-key="Digit3"><span class="key-legend">3</span></div>
+              <div class="keykey" data-key="Digit4"><span class="key-legend">4</span></div>
+              <div class="keykey" data-key="Digit5"><span class="key-legend">5</span></div>
+              <div class="keykey" data-key="Digit6"><span class="key-legend">6</span></div>
+              <div class="keykey" data-key="Digit7"><span class="key-legend">7</span></div>
+              <div class="keykey" data-key="Digit8"><span class="key-legend">8</span></div>
+              <div class="keykey" data-key="Digit9"><span class="key-legend">9</span></div>
+              <div class="keykey" data-key="Digit0"><span class="key-legend">0</span></div>
+              <div class="keykey key-wide-1_5" data-key="Backspace"><span class="key-legend">BACKSPACE</span></div>
+            </div>
+
+            <!-- ROW 2: TAB + QWERTY -->
+            <div class="keyboard-row">
+              <div class="keykey key-wide-1_5" data-key="Tab">
+                <span class="key-legend">TAB</span>
+                <span class="key-sub">TERM</span>
+              </div>
+              <div class="keykey" data-key="KeyQ"><span class="key-legend">Q</span></div>
+              <div class="keykey" data-key="KeyW"><span class="key-legend">W</span></div>
+              <div class="keykey" data-key="KeyE"><span class="key-legend">E</span></div>
+              <div class="keykey" data-key="KeyR"><span class="key-legend">R</span></div>
+              <div class="keykey" data-key="KeyT"><span class="key-legend">T</span></div>
+              <div class="keykey" data-key="KeyY"><span class="key-legend">Y</span></div>
+              <div class="keykey" data-key="KeyU"><span class="key-legend">U</span></div>
+              <div class="keykey" data-key="KeyI"><span class="key-legend">I</span></div>
+              <div class="keykey" data-key="KeyO"><span class="key-legend">O</span></div>
+              <div class="keykey" data-key="KeyP"><span class="key-legend">P</span></div>
+              <div class="keykey key-wide-1_5" data-key="Enter"><span class="key-legend">ENTER</span></div>
+            </div>
+
+            <!-- ROW 3: CAPS + ASDFGHJKL -->
+            <div class="keyboard-row">
+              <div class="keykey key-wide-1_75" data-key="CapsLock"><span class="key-legend">CAPS</span></div>
+              <div class="keykey" data-key="KeyA"><span class="key-legend">A</span></div>
+              <div class="keykey" data-key="KeyS"><span class="key-legend">S</span></div>
+              <div class="keykey" data-key="KeyD"><span class="key-legend">D</span></div>
+              <div class="keykey" data-key="KeyF"><span class="key-legend">F</span></div>
+              <div class="keykey" data-key="KeyG"><span class="key-legend">G</span></div>
+              <div class="keykey" data-key="KeyH"><span class="key-legend">H</span></div>
+              <div class="keykey" data-key="KeyJ"><span class="key-legend">J</span></div>
+              <div class="keykey" data-key="KeyK"><span class="key-legend">K</span></div>
+              <div class="keykey" data-key="KeyL"><span class="key-legend">L</span></div>
+              <div class="keykey key-wide-2_25" data-key="ShiftRight"><span class="key-legend">SHIFT</span></div>
+            </div>
+
+            <!-- ROW 4: SHIFT + Z X C (PRIMARY NAV HIGHLIGHTS) -->
+            <div class="keyboard-row">
+              <div class="keykey key-wide-2_25" data-key="ShiftLeft"><span class="key-legend">SHIFT</span></div>
+              
+              <!-- HIGHLIGHT KEY Z -->
+              <div class="keykey key-highlight key-z" data-key="KeyZ" id="keyZ">
+                <span class="key-legend">Z</span>
+                <span class="key-badge-nav">PROJECTS</span>
+              </div>
+              
+              <!-- HIGHLIGHT KEY X -->
+              <div class="keykey key-highlight key-x" data-key="KeyX" id="keyX">
+                <span class="key-legend">X</span>
+                <span class="key-badge-nav">SKILLS</span>
+              </div>
+              
+              <!-- HIGHLIGHT KEY C -->
+              <div class="keykey key-highlight key-c" data-key="KeyC" id="keyC">
+                <span class="key-legend">C</span>
+                <span class="key-badge-nav">CONTACT</span>
+              </div>
+
+              <div class="keykey" data-key="KeyV"><span class="key-legend">V</span></div>
+              <div class="keykey" data-key="KeyB"><span class="key-legend">B</span></div>
+              <div class="keykey" data-key="KeyN"><span class="key-legend">N</span></div>
+              <div class="keykey" data-key="KeyM"><span class="key-legend">M</span></div>
+              <div class="keykey" data-key="ArrowUp"><span class="key-legend">▲</span></div>
+              <div class="keykey key-wide-1_5" data-key="ControlRight"><span class="key-legend">CTRL</span></div>
+            </div>
+
+            <!-- ROW 5: BOTTOM COMMAND ROW & SPACEBAR -->
+            <div class="keyboard-row">
+              <div class="keykey key-wide-1_25" data-key="ControlLeft"><span class="key-legend">CTRL</span></div>
+              <div class="keykey key-wide-1_25" data-key="AltLeft"><span class="key-legend">ALT</span></div>
+              <div class="keykey key-spacebar" data-key="Space">
+                <span class="key-space-logo">M A N J U N A T H  —  A I  E N G I N E E R</span>
+              </div>
+              <div class="keykey key-wide-1_25" data-key="AltRight"><span class="key-legend">ALT</span></div>
+              <div class="keykey" data-key="ArrowLeft"><span class="key-legend">◄</span></div>
+              <div class="keykey" data-key="ArrowDown"><span class="key-legend">▼</span></div>
+              <div class="keykey" data-key="ArrowRight"><span class="key-legend">►</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- KEYBOARD STATUS BAR -->
+        <div class="keyboard-desk-info">
+          <div class="desk-stat">
+            <span class="stat-title">CURRENT KEY STROKE</span>
+            <span class="stat-value" id="lastPressedKey">—</span>
+          </div>
+          <div class="desk-stat">
+            <span class="stat-title">SWITCH TYPE</span>
+            <span class="stat-value" id="currentSwitchName">Thocky Gateron Oil King</span>
+          </div>
+          <div class="desk-stat">
+            <span class="stat-title">RGB LIGHTING WAVE</span>
+            <span class="stat-value" id="currentRgbTheme">Cyberpunk Neon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: INTERACTIVE DESK WORKSPACE & STICKERS -->
+    <section id="desk-workspace" class="desk-section">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title">DESK WORKSPACE & STICKERS</h2>
+          <p class="section-subtitle">Drag, rotate, and place custom engineering stickers on the desk canvas below!</p>
+        </div>
+
+        <!-- Sticker Canvas Workspace -->
+        <div class="desk-mat" id="deskMat">
+          <div class="mat-texture"></div>
+          <div class="mat-instructions">
+            <i data-lucide="move"></i> DRAG ANY STICKER TO CUSTOMIZE YOUR DESK
+          </div>
+
+          <!-- Draggable Tech Stickers -->
+          <div class="sticker sticker-python" style="top: 15%; left: 10%; transform: rotate(-8deg);">
+            <i class="devicon-python-plain colored"></i>
+            <span>Python 3.11</span>
+          </div>
+
+          <div class="sticker sticker-llm" style="top: 20%; right: 12%; transform: rotate(12deg);">
+            <i data-lucide="brain"></i>
+            <span>LLM & RAG</span>
+          </div>
+
+          <div class="sticker sticker-opencv" style="top: 60%; left: 15%; transform: rotate(5deg);">
+            <i class="devicon-opencv-plain colored"></i>
+            <span>OpenCV CV</span>
+          </div>
+
+          <div class="sticker sticker-react" style="top: 65%; right: 18%; transform: rotate(-15deg);">
+            <i class="devicon-react-original colored"></i>
+            <span>React.js</span>
+          </div>
+
+          <div class="sticker sticker-chroma" style="top: 40%; left: 45%; transform: rotate(-3deg);">
+            <i data-lucide="database"></i>
+            <span>Chroma Vector DB</span>
+          </div>
+
+          <div class="sticker sticker-agentic" style="top: 75%; left: 48%; transform: rotate(8deg);">
+            <i data-lucide="bot"></i>
+            <span>Agentic AI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: ABOUT & CORE TECHNICAL COMPETENCIES -->
+    <section id="skills" class="skills-section">
+      <div class="section-container">
+        <div class="about-grid">
+          
+          <!-- Left: Tactile Profile Card -->
+          <div class="profile-card">
+            <div class="profile-card-header">
+              <div class="online-indicator">
+                <span class="online-dot"></span>
+                <span>SYSTEM ONLINE</span>
+              </div>
+              <span class="id-badge">ID: MJ-1303</span>
+            </div>
+
+            <div class="profile-avatar-box">
+              <div class="avatar-ring-glow"></div>
+              <div class="avatar-icon">
+                <i data-lucide="cpu"></i>
+              </div>
+            </div>
+
+            <h3 class="profile-name">MANJUNATH</h3>
+            <p class="profile-role">AI Engineer & Data Science Professional</p>
+            <p class="profile-degree"><i data-lucide="graduation-cap"></i> B.Tech in Artificial Intelligence & Data Science (JKKMCT)</p>
+
+            <div class="profile-socials">
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="social-btn" title="GitHub">
+                <i class="devicon-github-original"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/manjunath-manjunath-248594352" target="_blank" rel="noopener" class="social-btn" title="LinkedIn">
+                <i class="devicon-linkedin-plain"></i>
+              </a>
+              <a href="https://www.instagram.com/mjx_1303" target="_blank" rel="noopener" class="social-btn" title="Instagram">
+                <i data-lucide="instagram"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Technical Competencies & Skills -->
+          <div class="competencies-box">
+            <div class="section-tag">CORE COMPETENCIES</div>
+            <h2 class="competencies-title">Engineering Intelligent Systems from Code to Cloud</h2>
+            <p class="competencies-desc">
+              Specializing in architecting practical AI applications, LLM RAG pipelines, real-time computer vision engines, and scalable full-stack web platforms. Combining statistical rigor with rapid agentic software execution.
+            </p>
+
+            <div class="skills-grid">
+              
+              <!-- Skill Category 1 -->
+              <div class="skill-card">
+                <div class="skill-icon"><i data-lucide="brain"></i></div>
+                <h4>LLM & RAG Architecture</h4>
+                <p>Vector databases (ChromaDB), semantic embeddings, prompt engineering, agentic orchestration, & contextual memory retrieval.</p>
+                <div class="skill-tags">
+                  <span>ChromaDB</span>
+                  <span>LangChain</span>
+                  <span>LlamaIndex</span>
+                  <span>RAG</span>
+                </div>
+              </div>
+
+              <!-- Skill Category 2 -->
+              <div class="skill-card">
+                <div class="skill-icon"><i data-lucide="eye"></i></div>
+                <h4>Computer Vision & ML</h4>
+                <p>Real-time pose estimation, MediaPipe landmark tracking, OpenCV stream processing, predictive analytics, & model optimization.</p>
+                <div class="skill-tags">
+                  <span>MediaPipe</span>
+                  <span>OpenCV</span>
+                  <span>PyTorch</span>
+                  <span>Scikit-Learn</span>
+                </div>
+              </div>
+
+              <!-- Skill Category 3 -->
+              <div class="skill-card">
+                <div class="skill-icon"><i data-lucide="code"></i></div>
+                <h4>Full-Stack & Systems</h4>
+                <p>Production API design, asynchronous Python backend services, modern interactive frontend interfaces, Docker containerization.</p>
+                <div class="skill-tags">
+                  <span>Python</span>
+                  <span>JavaScript/TS</span>
+                  <span>React</span>
+                  <span>Docker</span>
+                </div>
+              </div>
+
+              <!-- Skill Category 4 -->
+              <div class="skill-card">
+                <div class="skill-icon"><i data-lucide="terminal"></i></div>
+                <h4>Agentic Development</h4>
+                <p>Pair programming with advanced agent workflows, autonomous tool integration, rapid prototyping, and clean architecture.</p>
+                <div class="skill-tags">
+                  <span>Agentic AI</span>
+                  <span>Git</span>
+                  <span>CI/CD</span>
+                  <span>REST APIs</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: INTERACTIVE PCB PROJECTS SHOWCASE -->
+    <section id="projects" class="projects-section">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-tag">PROJECT PCB GALLERY</div>
+          <h2 class="section-title">FEATURED ENGINEERING PROJECTS</h2>
+          <p class="section-subtitle">Click on any project keycap or PCB card below for interactive technical breakdown and live links.</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="project-filters">
+          <button class="filter-btn active" data-filter="all">ALL PROJECTS</button>
+          <button class="filter-btn" data-filter="ai">AI / LLM / RAG</button>
+          <button class="filter-btn" data-filter="vision">COMPUTER VISION</button>
+          <button class="filter-btn" data-filter="web">WEB & PLATFORMS</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid">
+
+          <!-- Project 1 -->
+          <article class="project-card" data-category="ai" data-project-id="p1">
+            <div class="project-pcb-header">
+              <span class="pcb-pin">REV 1.0</span>
+              <span class="project-type"><i data-lucide="bot"></i> AI & RAG</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-name">RAG & LLM Context Engine</h3>
+              <p class="project-desc">
+                High-performance Retrieval-Augmented Generation engine utilizing Chroma Vector DB and semantic embeddings for instant document querying.
+              </p>
+              <div class="project-tech">
+                <span>Python</span>
+                <span>ChromaDB</span>
+                <span>LangChain</span>
+                <span>FastAPI</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <button class="btn-project-details" onclick="openProjectModal('p1')">
+                <span>INSPECT PCB</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card" data-category="vision" data-project-id="p2">
+            <div class="project-pcb-header">
+              <span class="pcb-pin">REV 2.1</span>
+              <span class="project-type"><i data-lucide="eye"></i> COMPUTER VISION</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-name">Real-Time Pose & Landmark Analyzer</h3>
+              <p class="project-desc">
+                Computer vision tracking suite built with MediaPipe and OpenCV for multi-point skeletal joint estimation and motion analytics.
+              </p>
+              <div class="project-tech">
+                <span>OpenCV</span>
+                <span>MediaPipe</span>
+                <span>Python</span>
+                <span>NumPy</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <button class="btn-project-details" onclick="openProjectModal('p2')">
+                <span>INSPECT PCB</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card" data-category="web" data-project-id="p3">
+            <div class="project-pcb-header">
+              <span class="pcb-pin">REV 3.0</span>
+              <span class="project-type"><i data-lucide="layout"></i> WEB PLATFORM</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-name">CBT Interactive Web Platform</h3>
+              <p class="project-desc">
+                Cognitive behavioral web platform featuring real-time state management, interactive modules, and responsive design architecture.
+              </p>
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>TypeScript</span>
+                <span>HTML5</span>
+                <span>CSS3</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <button class="btn-project-details" onclick="openProjectModal('p3')">
+                <span>INSPECT PCB</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project-card" data-category="web" data-project-id="p4">
+            <div class="project-pcb-header">
+              <span class="pcb-pin">REV 1.4</span>
+              <span class="project-type"><i data-lucide="briefcase"></i> FULL STACK</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-name">Home Services Marketplace Platform</h3>
+              <p class="project-desc">
+                Comprehensive platform connecting users with local service professionals featuring instant booking, scheduling, and portal management.
+              </p>
+              <div class="project-tech">
+                <span>TypeScript</span>
+                <span>React</span>
+                <span>Node.js</span>
+                <span>REST API</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <button class="btn-project-details" onclick="openProjectModal('p4')">
+                <span>INSPECT PCB</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+          <!-- Project 5 -->
+          <article class="project-card" data-category="ai" data-project-id="p5">
+            <div class="project-pcb-header">
+              <span class="pcb-pin">REV 4.2</span>
+              <span class="project-type"><i data-lucide="cpu"></i> IOT & AI</span>
+            </div>
+            <div class="project-body">
+              <h3 class="project-name">Distributed Sensor AI Analytics</h3>
+              <p class="project-desc">
+                Predictive telemetry pipeline aggregating multi-node IoT sensor data for real-time anomaly detection and predictive maintenance.
+              </p>
+              <div class="project-tech">
+                <span>Python</span>
+                <span>Scikit-Learn</span>
+                <span>Docker</span>
+                <span>TimescaleDB</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <button class="btn-project-details" onclick="openProjectModal('p5')">
+                <span>INSPECT PCB</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: TACTILE CONTACT DESK & SOCIAL LINKS -->
+    <section id="contact" class="contact-section">
+      <div class="section-container">
+        <div class="contact-grid">
+          
+          <div class="contact-info-box">
+            <div class="section-tag">GET IN TOUCH</div>
+            <h2 class="contact-title">Let's Build Something Exceptional Together</h2>
+            <p class="contact-desc">
+              Open for full-time AI Engineering roles, LLM/Computer Vision projects, and innovative technical collaborations.
+            </p>
+
+            <div class="contact-method-list">
+              <div class="contact-item">
+                <div class="item-icon"><i data-lucide="github"></i></div>
+                <div class="item-details">
+                  <span class="item-label">GitHub Profile</span>
+                  <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="item-link">github.com/Manju1303</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="item-icon"><i data-lucide="linkedin"></i></div>
+                <div class="item-details">
+                  <span class="item-label">LinkedIn Connect</span>
+                  <a href="https://www.linkedin.com/in/manjunath-manjunath-248594352" target="_blank" rel="noopener" class="item-link">linkedin.com/in/manjunath-manjunath-248594352</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="item-icon"><i data-lucide="instagram"></i></div>
+                <div class="item-details">
+                  <span class="item-label">Instagram Handle</span>
+                  <a href="https://www.instagram.com/mjx_1303" target="_blank" rel="noopener" class="item-link">@mjx_1303</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tactile Contact Form -->
+          <div class="contact-form-card">
+            <h3 class="form-title"><i data-lucide="send"></i> Transmit Message</h3>
+            <form id="contactForm" onsubmit="handleFormSubmit(event)">
+              <div class="form-group">
+                <label for="senderName">YOUR NAME</label>
+                <input type="text" id="senderName" class="form-input" placeholder="e.g. Sarah Connor" required>
+              </div>
+
+              <div class="form-group">
+                <label for="senderEmail">EMAIL ADDRESS</label>
+                <input type="email" id="senderEmail" class="form-input" placeholder="name@company.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="senderMessage">PROJECT INQUIRY / MESSAGE</label>
+                <textarea id="senderMessage" class="form-textarea" rows="4" placeholder="Describe your project requirements or position details..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-submit">
+                <span>SEND TRANSMISSION</span>
+                <i data-lucide="corner-down-left"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- INTERACTIVE MECHANICAL TERMINAL OVERLAY (CTRL + K) -->
+  <div id="terminalOverlay" class="terminal-overlay">
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="dot dot-red" id="closeTerminalBtn"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <div class="terminal-title">MJ_MECHANICAL_CLI_v2.4</div>
+        <div class="terminal-hint">Press ESC to close</div>
+      </div>
+
+      <div class="terminal-body" id="terminalOutput">
+        <div class="term-line welcome">Welcome to Manjunath's Tactile Terminal Console.</div>
+        <div class="term-line">Type <span class="cmd-highlight">help</span> to list available commands.</div>
+      </div>
+
+      <div class="terminal-input-row">
+        <span class="prompt">mj@zxc-keyboard:~$</span>
+        <input type="text" id="terminalInput" class="term-input" autofocus placeholder="Type command here (e.g. help, projects, theme matrix)...">
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL INSPECTION MODAL -->
+  <div id="projectModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeProjectModal()">&times;</button>
+      <div id="modalDetails"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>© 2026 Manjunath. Designed with Tactile Mechanical Keyboard Aesthetics inspired by Awwwards portfolio-zxc.</p>
+      <div class="footer-key-hints">
+        <span>Press <kbd>Z</kbd> Projects</span>
+        <span>Press <kbd>X</kbd> Skills</span>
+        <span>Press <kbd>C</kbd> Contact</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>
