@@ -258,28 +258,28 @@ document.addEventListener('DOMContentLoaded', () => {
       category: 'AI & LLM Architecture',
       tech: ['Python', 'ChromaDB', 'LangChain', 'FastAPI'],
       description: 'Production Retrieval-Augmented Generation engine utilizing Chroma Vector DB and semantic embeddings for high-precision document QA.',
-      github: 'https://github.com/Manju1303'
+      github: 'https://github.com/Manju1303/RAG-LLM-Context-Engine'
     },
     p2: {
       title: 'Real-Time Pose & Landmark Analyzer',
       category: 'Computer Vision & ML',
       tech: ['OpenCV', 'MediaPipe', 'Python', 'NumPy'],
       description: 'Real-time computer vision tracking framework using MediaPipe and OpenCV for 33-point skeletal landmark detection.',
-      github: 'https://github.com/Manju1303'
+      github: 'https://github.com/Manju1303/Pose-Landmark-Analyzer'
     },
     p3: {
       title: 'CBT Interactive Web Platform',
       category: 'Web Platform',
       tech: ['JavaScript', 'TypeScript', 'HTML5', 'CSS3'],
       description: 'Interactive web platform for cognitive behavioral exercises and real-time state tracking.',
-      github: 'https://github.com/Manju1303'
+      github: 'https://github.com/Manju1303/CBT-Interactive-Web-Platform'
     },
     p4: {
       title: 'Home Services Marketplace Platform',
       category: 'Full-Stack Engineering',
       tech: ['TypeScript', 'React', 'Node.js', 'REST API'],
       description: 'Comprehensive platform connecting users with local service professionals with instant booking.',
-      github: 'https://github.com/Manju1303'
+      github: 'https://github.com/Manju1303/Home-Services-Marketplace'
     }
   };
 
@@ -414,10 +414,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     camera.position.z = 5;
 
+    let isVisible = true;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isVisible = entry.isIntersecting;
+      });
+    }, { threshold: 0.05 });
+    observer.observe(canvas);
+
     function animate() {
       requestAnimationFrame(animate);
-      particlesMesh.rotation.y += 0.0008;
-      renderer.render(scene, camera);
+      if (isVisible) {
+        particlesMesh.rotation.y += 0.0008;
+        renderer.render(scene, camera);
+      }
     }
     animate();
 
