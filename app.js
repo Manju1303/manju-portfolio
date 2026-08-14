@@ -1,5 +1,6 @@
 /* ==========================================================================
-   MANJUNATH — PORTFOLIO-ZXC BEHAVIOR, INTERACTIONS & PROJECT ENGINE
+   MANJUNATH — FINAL PRD CREATIVE PORTFOLIO ENGINE
+   Custom Amber Cursor, Terminal Morph, Keyboard Dock, CMD Easter Eggs, 3D WebGL
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,18 +9,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const state = {
     audioEnabled: true,
-    soundProfile: 'thock'
+    soundProfile: 'thock',
+    introMorphed: false,
+    cmdMode: 'cmd', // 'cmd' or 'linux'
+    commandHistory: [],
+    historyIndex: -1
   };
+
+  // CUSTOM AMBER CURSOR ENGINE (PRD SECTION 23)
+  initCustomCursor();
 
   // THREE.JS PARTICLES BACKGROUND
   initParticleBackground();
 
-  // CLOCKWORK LOADER
-  initClockworkLoader();
+  // INTRO TERMINAL MORPH ENGINE
+  initIntroTerminal();
 
-  // =========================================================================
   // AUDIO SYNTHESIZER
-  // =========================================================================
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   let audioCtx = null;
 
@@ -70,65 +76,89 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // CLOCKWORK LOADER
+  // CUSTOM CURSOR (PRD SECTION 23)
   // =========================================================================
-  function initClockworkLoader() {
-    const loader = document.getElementById('clockworkLoader');
-    const fill = document.getElementById('loaderFill');
-    const status = document.getElementById('loaderStatus');
-    const enterBtn = document.getElementById('enterPortfolioBtn');
+  function initCustomCursor() {
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (!dot || !ring) return;
 
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 18) + 5;
-      if (progress > 100) progress = 100;
-      fill.style.width = progress + '%';
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
 
-      if (progress < 40) status.textContent = 'CALIBRATING AMBER BACKLIGHT...';
-      else if (progress < 70) status.textContent = 'LOADING 9 PROJECT MODULES...';
-      else if (progress < 95) status.textContent = 'SYNCHRONIZING DESK DIALS...';
-      else status.textContent = 'KEYBOARD READY!';
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = `${mouseX}px`;
+      dot.style.top = `${mouseY}px`;
+    });
 
-      if (progress >= 100) clearInterval(interval);
-    }, 90);
+    function renderRing() {
+      ringX += (mouseX - ringX) * 0.2;
+      ringY += (mouseY - ringY) * 0.2;
+      ring.style.left = `${ringX}px`;
+      ring.style.top = `${ringY}px`;
+      requestAnimationFrame(renderRing);
+    }
+    renderRing();
 
-    enterBtn.addEventListener('click', () => {
-      loader.classList.add('loaded');
-      getAudioContext();
-      playMechanicalKeySound();
+    // Hover expand targets
+    const hoverables = 'a, button, .dock-key, .project-card-amber, .stack-pill, .filter-tab, .flow-step-card, input';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(hoverables)) {
+        document.body.classList.add('hovered-link');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(hoverables)) {
+        document.body.classList.remove('hovered-link');
+      }
     });
   }
 
   // =========================================================================
-  // KEYBOARD MAP & ACTUATION
+  // INTRO TERMINAL MORPH LOGIC (PRD SECTION 3)
   // =========================================================================
-  const keyElements = document.querySelectorAll('.keykey');
-  const keyMap = {};
+  function initIntroTerminal() {
+    const introTerminal = document.getElementById('introTerminal');
+    const introInput = document.getElementById('introTerminalInput');
+    const enterBtn = document.getElementById('enterWorkspaceBtn');
 
-  keyElements.forEach(keyEl => {
+    function launchWorkspace() {
+      if (state.introMorphed) return;
+      state.introMorphed = true;
+      introTerminal.classList.add('morphed');
+      getAudioContext();
+      playMechanicalKeySound();
+    }
+
+    if (enterBtn) enterBtn.addEventListener('click', launchWorkspace);
+
+    if (introInput) {
+      introInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          launchWorkspace();
+        }
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (!state.introMorphed && e.key === 'Escape') {
+        launchWorkspace();
+      }
+    });
+  }
+
+  // =========================================================================
+  // KEYBOARD DOCK & GLOBAL HOTKEYS (PRD SECTION 7)
+  // =========================================================================
+  const dockKeys = document.querySelectorAll('.dock-key');
+  const dockMap = {};
+
+  dockKeys.forEach(keyEl => {
     const code = keyEl.getAttribute('data-key');
-    if (code) keyMap[code] = keyEl;
-
-    keyEl.addEventListener('mousedown', () => triggerKeyActuation(keyEl, code));
-    keyEl.addEventListener('mouseup', () => releaseKeyActuation(keyEl));
-    keyEl.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      triggerKeyActuation(keyEl, code);
-    }, { passive: false });
-    keyEl.addEventListener('touchend', () => releaseKeyActuation(keyEl));
+    if (code) dockMap[code] = keyEl;
   });
-
-  function triggerKeyActuation(keyEl, keyName) {
-    if (!keyEl) return;
-    keyEl.classList.add('pressed');
-    playMechanicalKeySound();
-    handleKeyAction(keyName);
-  }
-
-  function releaseKeyActuation(keyEl) {
-    if (!keyEl) return;
-    keyEl.classList.remove('pressed');
-  }
 
   window.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -146,48 +176,36 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const keyEl = keyMap[e.code];
-    if (keyEl) triggerKeyActuation(keyEl, e.code);
-  });
+    // Trigger tactile press animation
+    const dockEl = dockMap[e.code];
+    if (dockEl) {
+      dockEl.classList.add('pressed');
+      playMechanicalKeySound();
+      setTimeout(() => dockEl.classList.remove('pressed'), 140);
+    }
 
-  window.addEventListener('keyup', (e) => {
-    const keyEl = keyMap[e.code];
-    if (keyEl) releaseKeyActuation(keyEl);
-  });
-
-  function handleKeyAction(code) {
-    switch (code) {
+    // Hotkey Action Dispatch
+    switch (e.code) {
       case 'KeyA': scrollToSection('about'); break;
-      case 'KeyZ': scrollToSection('projects'); break;
-      case 'KeyX': scrollToSection('skills'); break;
+      case 'KeyW': scrollToSection('projects'); break;
+      case 'KeyI': scrollToSection('ai-systems'); break;
+      case 'KeyS': scrollToSection('stack'); break;
+      case 'KeyJ': scrollToSection('journey'); break;
       case 'KeyC': scrollToSection('contact'); break;
-      case 'Escape':
-        scrollToSection('hero');
-        closeTerminal();
-        closeProjectModal();
-        break;
-      case 'Space': triggerRgbWave(); break;
+      case 'KeyT': toggleTerminal(); break;
       case 'Digit1': openProjectModal('p1'); break;
       case 'Digit2': openProjectModal('p2'); break;
       case 'Digit3': openProjectModal('p3'); break;
       case 'Digit4': openProjectModal('p4'); break;
       case 'Digit5': openProjectModal('p5'); break;
       case 'Digit6': openProjectModal('p6'); break;
-      case 'Digit7': openProjectModal('p7'); break;
-      case 'Digit8': openProjectModal('p8'); break;
-      case 'Digit9': openProjectModal('p9'); break;
+      case 'Escape':
+        closeTerminal();
+        closeProjectModal();
+        break;
       default: break;
     }
-  }
-
-  function triggerRgbWave() {
-    keyElements.forEach((key, index) => {
-      setTimeout(() => {
-        key.classList.add('pressed');
-        setTimeout(() => key.classList.remove('pressed'), 120);
-      }, index * 16);
-    });
-  }
+  });
 
   window.scrollToSection = function(id) {
     const section = document.getElementById(id);
@@ -195,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // =========================================================================
-  // AUDIO PROFILE & CONTROLS
+  // AUDIO CONTROLS
   // =========================================================================
   const audioToggleBtn = document.getElementById('audioToggleBtn');
   const audioIcon = document.getElementById('audioIcon');
@@ -223,34 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // DESK DECOR INTERACTIVITY
-  // =========================================================================
-  const deskMouse = document.getElementById('deskMouse');
-  if (deskMouse) {
-    deskMouse.addEventListener('click', () => {
-      playMechanicalKeySound();
-      deskMouse.style.transform = 'translateY(2px) scale(0.96)';
-      setTimeout(() => deskMouse.style.transform = 'none', 150);
-    });
-  }
-
-  document.querySelectorAll('.figurine').forEach(fig => {
-    fig.addEventListener('click', () => {
-      playMechanicalKeySound();
-      fig.style.transform = 'translateY(-6px) scale(1.15)';
-      setTimeout(() => fig.style.transform = 'none', 200);
-    });
-  });
-
-  // =========================================================================
-  // PROJECT DATA (9 PROJECTS)
+  // COMPREHENSIVE 11-PROJECT DATABASE
   // =========================================================================
   const projectData = {
     p1: {
       title: 'AURORA',
       category: 'AI & LLMs',
-      subtitle: 'AI Avatar · Assistant · Voice AI · 3D UX',
-      tech: ['Python', 'LLM', '3D Models', 'Speech APIs'],
+      subtitle: '3D AI Voice Assistant · Avatar UX',
+      tech: ['AI', 'LLM', 'VOICE', '3D'],
       features: [
         'Next-generation 3D conversational agent leveraging LLMs and real-time speech processing',
         'Advanced NLP engine for natural, context-aware human-machine interaction',
@@ -260,10 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
       sourceCode: 'https://github.com/Manju1303'
     },
     p2: {
-      title: 'Memora — AI Agent',
+      title: 'MEMORA',
       category: 'AI & LLMs',
-      subtitle: 'AI Agent · RAG · Memory',
-      tech: ['Python', 'Vector DB', 'Semantic Search'],
+      subtitle: 'Persistent RAG Memory Agent',
+      tech: ['RAG', 'ChromaDB', 'LLM', 'Python'],
       features: [
         'Intelligent RAG-based agent with persistent semantic memory across sessions',
         'Advanced retrieval pipeline utilizing vector embeddings and ChromaDB',
@@ -273,10 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
       sourceCode: 'https://github.com/Manju1303'
     },
     p3: {
-      title: 'HealthGuard AI',
+      title: 'HEALTHGUARD AI',
       category: 'Health & Full-Stack',
-      subtitle: 'AI · HealthTech · Analytics',
-      tech: ['Python', 'FastAPI', 'React', 'PostgreSQL'],
+      subtitle: 'NABH Compliance Intelligence',
+      tech: ['AI', 'FastAPI', 'React', 'PostgreSQL'],
       features: [
         'Healthcare audit automation utilizing predictive analytics for NABH pre-entry assessment',
         'Intelligent gap analysis engine with automated compliance scoring and reporting',
@@ -286,9 +284,48 @@ document.addEventListener('DOMContentLoaded', () => {
       sourceCode: null
     },
     p4: {
-      title: 'Air Canva',
+      title: 'PROJECT SENTINEL',
+      category: 'Computer Vision & AI',
+      subtitle: 'Autonomous AI Surveillance Drone',
+      tech: ['AI', 'Computer Vision', 'YOLO', 'Robotics'],
+      features: [
+        'Autonomous drone navigation and mission control visualization system',
+        'Real-time aerial object tracking and automated route optimization',
+        'Low-latency telemetry streaming over high-speed communication channels'
+      ],
+      liveDemo: null,
+      sourceCode: 'https://github.com/Manju1303'
+    },
+    p5: {
+      title: 'PERSONAL LLM',
+      category: 'AI & LLMs',
+      subtitle: 'On-Premise Privacy LLM Instance',
+      tech: ['LLM', 'Ollama', 'Python', 'Linux'],
+      features: [
+        'On-premise deployment of large-scale language models (LLaMA/Qwen) via high-performance Linux infrastructure',
+        'Privacy-first AI environment ensuring zero-data-leakage through localized semantic processing',
+        'Modular LLM orchestration layer for advanced model tuning and bespoke system prompt engineering'
+      ],
+      liveDemo: null,
+      sourceCode: 'https://github.com/Manju1303'
+    },
+    p6: {
+      title: 'JKKM MESS ERP',
+      category: 'Full-Stack & Systems',
+      subtitle: 'AI-Powered Mess Management ERP',
+      tech: ['Next.js', 'FastAPI', 'PostgreSQL', 'AI'],
+      features: [
+        'Smart ERP platform managing daily student attendance, meal consumption, and inventory forecasting',
+        'Predictive consumption model reducing food wastage and optimizing mess operations',
+        'Real-time administrative control panel with automated report generation'
+      ],
+      liveDemo: null,
+      sourceCode: 'https://github.com/Manju1303'
+    },
+    p7: {
+      title: 'AIR CANVA',
       category: 'Computer Vision',
-      subtitle: 'Comp. Vision · AI Interaction',
+      subtitle: 'Zero-Touch Spatial Canvas',
       tech: ['JavaScript', 'MediaPipe', 'Canvas API'],
       features: [
         'Immersive zero-touch interface utilizing Computer Vision and MediaPipe for spatial creativity',
@@ -298,11 +335,11 @@ document.addEventListener('DOMContentLoaded', () => {
       liveDemo: '#',
       sourceCode: 'https://github.com/Manju1303'
     },
-    p5: {
-      title: 'Theft Detection System',
+    p8: {
+      title: 'THEFT DETECTION SYSTEM',
       category: 'Computer Vision',
-      subtitle: 'Comp. Vision · AI Monitoring · Security',
-      tech: ['Python', 'OpenCV', 'TensorFlow', 'Security'],
+      subtitle: 'Real-Time Threat Monitor',
+      tech: ['Python', 'OpenCV', 'TensorFlow'],
       features: [
         'Real-time suspicious activity monitoring and automated threat detection',
         'Intelligent video stream analysis utilizing custom-trained CV models',
@@ -311,10 +348,10 @@ document.addEventListener('DOMContentLoaded', () => {
       liveDemo: '#',
       sourceCode: 'https://github.com/Manju1303'
     },
-    p6: {
-      title: 'Lucid OCR',
+    p9: {
+      title: 'LUCID OCR',
       category: 'AI & Computer Vision',
-      subtitle: 'AI OCR · NLP',
+      subtitle: 'High-Accuracy AI OCR & NLP',
       tech: ['Python', 'Tesseract', 'OpenCV'],
       features: [
         'High-accuracy AI OCR engine for instant multi-format text extraction',
@@ -324,10 +361,10 @@ document.addEventListener('DOMContentLoaded', () => {
       liveDemo: null,
       sourceCode: 'https://github.com/Manju1303'
     },
-    p7: {
-      title: 'AI Humanizer',
+    p10: {
+      title: 'AI HUMANIZER',
       category: 'AI & NLP',
-      subtitle: 'NLP · AI · Content',
+      subtitle: 'Linguistic Syntax Restructuring',
       tech: ['TypeScript', 'NLP', 'AI'],
       features: [
         'Proprietary NLP engine utilizing advanced linguistic modeling to neutralize AI-generated syntax',
@@ -337,23 +374,10 @@ document.addEventListener('DOMContentLoaded', () => {
       liveDemo: null,
       sourceCode: 'https://github.com/Manju1303'
     },
-    p8: {
-      title: 'Personal LLM',
-      category: 'AI & LLMs',
-      subtitle: 'Local AI · Hosting · Privacy',
-      tech: ['Python', 'Ollama', 'Linux'],
-      features: [
-        'On-premise deployment of large-scale language models (LLaMA) via high-performance Linux infrastructure',
-        'Privacy-first AI environment ensuring zero-data-leakage through localized semantic processing',
-        'Modular LLM orchestration layer for advanced model tuning and bespoke system prompt engineering'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p9: {
-      title: 'Fitness Tracker',
+    p11: {
+      title: 'FITNESS TRACKER',
       category: 'Health & Full-Stack',
-      subtitle: 'Health · Storage · Analytics',
+      subtitle: 'Biometric Health Analytics',
       tech: ['HTML5', 'CSS3', 'JavaScript'],
       features: [
         'Feature-rich health analytics platform for comprehensive biometric logging and BMI monitoring',
@@ -416,7 +440,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      // Update active tab
       filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
 
@@ -440,67 +463,150 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // TERMINAL ENGINE
+  // TECH STACK HIGHLIGHT ENGINE
+  // =========================================================================
+  const stackPills = document.querySelectorAll('.stack-pill');
+  stackPills.forEach(pill => {
+    pill.addEventListener('mouseenter', () => {
+      const targetTech = pill.getAttribute('data-tech').toLowerCase();
+
+      projectCards.forEach(card => {
+        const cardTags = Array.from(card.querySelectorAll('.card-tags span')).map(s => s.textContent.toLowerCase());
+        if (cardTags.some(tag => tag.includes(targetTech))) {
+          card.classList.add('highlighted');
+        }
+      });
+    });
+
+    pill.addEventListener('mouseleave', () => {
+      projectCards.forEach(card => card.classList.remove('highlighted'));
+    });
+  });
+
+  // =========================================================================
+  // TERMINAL CLI PARSER & EASTER EGGS (PRD SECTION 18-21)
   // =========================================================================
   const cmdPaletteBtn = document.getElementById('cmdPaletteBtn');
   const terminalOverlay = document.getElementById('terminalOverlay');
   const terminalInput = document.getElementById('terminalInput');
   const terminalOutput = document.getElementById('terminalOutput');
+  const termPrompt = document.getElementById('termPrompt');
+  const termModeTitle = document.getElementById('termModeTitle');
 
   if (cmdPaletteBtn) cmdPaletteBtn.addEventListener('click', toggleTerminal);
 
-  function toggleTerminal() {
+  window.toggleTerminal = function() {
     if (terminalOverlay.classList.contains('active')) closeTerminal();
     else {
       terminalOverlay.classList.add('active');
       terminalInput.focus();
       playMechanicalKeySound();
     }
-  }
+  };
 
-  function closeTerminal() {
+  window.closeTerminal = function() {
     if (terminalOverlay) terminalOverlay.classList.remove('active');
-  }
+  };
 
   if (terminalInput) {
     terminalInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const cmd = terminalInput.value.trim();
         if (cmd) {
+          state.commandHistory.push(cmd);
+          state.historyIndex = state.commandHistory.length;
           executeCommand(cmd);
           terminalInput.value = '';
         }
+      } else if (e.key === 'ArrowUp') {
+        if (state.historyIndex > 0) {
+          state.historyIndex--;
+          terminalInput.value = state.commandHistory[state.historyIndex] || '';
+        }
+      } else if (e.key === 'ArrowDown') {
+        if (state.historyIndex < state.commandHistory.length - 1) {
+          state.historyIndex++;
+          terminalInput.value = state.commandHistory[state.historyIndex] || '';
+        } else {
+          state.historyIndex = state.commandHistory.length;
+          terminalInput.value = '';
+        }
+      } else if (e.key === 'Tab') {
+        e.preventDefault();
+        handleTabAutocomplete(terminalInput);
       }
     });
   }
 
+  const availableCmds = ['help', 'about', 'whoami', 'projects', 'ai', 'agents', 'llm', 'rag', 'skills', 'stack', 'journey', 'github', 'linkedin', 'contact', 'neofetch', 'sudo hire manjunath', 'matrix', 'hack', 'mode linux', 'mode cmd', 'clear', 'cls', 'exit'];
+
+  function handleTabAutocomplete(input) {
+    const val = input.value.toLowerCase().trim();
+    if (!val) return;
+    const match = availableCmds.find(c => c.startsWith(val));
+    if (match) {
+      input.value = match;
+    }
+  }
+
   function executeCommand(cmd) {
-    appendTermLine(`mj@zxc-portfolio:~$ ${cmd}`, 'cmd-user');
+    const currentPrompt = state.cmdMode === 'cmd' ? 'C:\\Manjunath\\Portfolio>' : 'mj@manjunath:~$';
+    appendTermLine(`${currentPrompt} ${cmd}`, 'cmd-user');
     const cleanCmd = cmd.toLowerCase().trim();
 
     if (cleanCmd === 'help') {
-      appendTermLine('Commands: about, projects, skills, contact, clear, exit', 'cmd-info');
-      appendTermLine('Press keys 1-9 to view individual projects.', 'cmd-info');
-    } else if (cleanCmd === 'about') {
+      appendTermLine('Supported Commands: help, about, whoami, projects, ai, stack, journey, github, contact, neofetch, sudo hire manjunath, matrix, hack, mode linux, mode cmd, clear, exit', 'cmd-info');
+    } else if (cleanCmd === 'neofetch') {
+      appendTermLine('MANJUNATH@PORTFOLIO', 'cmd-highlight');
+      appendTermLine('-------------------', 'cmd-highlight');
+      appendTermLine('OS: Manjunath Portfolio OS v3.0 (x86_64)', '');
+      appendTermLine('ROLE: AI Engineer & Agentic Coder', 'cmd-info');
+      appendTermLine('FOCUS: LLM RAG, Multi-Agent Systems, Computer Vision', '');
+      appendTermLine('PROJECTS: 11 (AURORA, MEMORA, HEALTHGUARD AI, SENTINEL...)', '');
+      appendTermLine('STATUS: ONLINE ●', 'cmd-info');
+    } else if (cleanCmd === 'sudo hire manjunath') {
+      appendTermLine('Checking authorization...', 'cmd-info');
+      setTimeout(() => {
+        appendTermLine('100% ACCESS GRANTED. Good choice. 🚀', 'cmd-highlight');
+      }, 300);
+    } else if (cleanCmd === 'matrix') {
+      appendTermLine('Wake up, Neo... The Matrix has you. 🟢', 'cmd-info');
+    } else if (cleanCmd === 'hack') {
+      appendTermLine('Access denied. Nice try. 😄', 'cmd-warn');
+    } else if (cleanCmd === 'mode linux') {
+      state.cmdMode = 'linux';
+      termPrompt.textContent = 'mj@manjunath:~$';
+      termModeTitle.textContent = 'MJ_MANJUNATH_CLI_v3.0 [LINUX MODE]';
+      appendTermLine('Switched prompt mode to Linux (mj@manjunath:~$)', 'cmd-info');
+    } else if (cleanCmd === 'mode cmd') {
+      state.cmdMode = 'cmd';
+      termPrompt.textContent = 'C:\\Manjunath\\Portfolio>';
+      termModeTitle.textContent = 'MJ_MANJUNATH_CLI_v3.0 [CMD MODE]';
+      appendTermLine('Switched prompt mode to Windows CMD (C:\\Manjunath\\Portfolio>)', 'cmd-info');
+    } else if (cleanCmd === 'about' || cleanCmd === 'whoami') {
       appendTermLine('Manjunath — AI Engineer & Data Science Professional (B.Tech JKKMCT).', 'cmd-highlight');
-      appendTermLine('Specializing in LLM RAG pipelines, Computer Vision, and Full-Stack engineering.', '');
-    } else if (cleanCmd === 'projects') {
-      appendTermLine('9 Featured Projects: AURORA, Memora, HealthGuard AI, Air Canva, Theft Detection,', 'cmd-info');
-      appendTermLine('Lucid OCR, AI Humanizer, Personal LLM, Fitness Tracker', 'cmd-info');
+      appendTermLine('"I DON\'T JUST USE AI. I BUILD SYSTEMS AROUND IT."', 'cmd-info');
+    } else if (cleanCmd === 'projects' || cleanCmd === 'work') {
       scrollToSection('projects');
       closeTerminal();
-    } else if (cleanCmd === 'skills') {
-      scrollToSection('skills');
+    } else if (cleanCmd === 'ai' || cleanCmd === 'agents' || cleanCmd === 'llm' || cleanCmd === 'rag') {
+      scrollToSection('ai-systems');
       closeTerminal();
-    } else if (cleanCmd === 'contact') {
+    } else if (cleanCmd === 'skills' || cleanCmd === 'stack') {
+      scrollToSection('stack');
+      closeTerminal();
+    } else if (cleanCmd === 'journey') {
+      scrollToSection('journey');
+      closeTerminal();
+    } else if (cleanCmd === 'contact' || cleanCmd === 'github' || cleanCmd === 'linkedin') {
       scrollToSection('contact');
       closeTerminal();
-    } else if (cleanCmd === 'clear') {
+    } else if (cleanCmd === 'clear' || cleanCmd === 'cls') {
       terminalOutput.innerHTML = '';
     } else if (cleanCmd === 'exit') {
       closeTerminal();
     } else {
-      appendTermLine(`Unknown command '${cmd}'. Type 'help' for available commands.`, 'cmd-warn');
+      appendTermLine(`Command '${cmd}' not recognized. Type 'help' for available commands.`, 'cmd-warn');
     }
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
     playMechanicalKeySound();
@@ -527,19 +633,19 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const particlesCount = 250;
+    const particlesCount = 300;
     const posArray = new Float32Array(particlesCount * 3);
 
     for (let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 20;
+      posArray[i] = (Math.random() - 0.5) * 22;
     }
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.03,
-      color: 0xd4af37,
+      size: 0.032,
+      color: 0xd6a928,
       transparent: true,
       opacity: 0.45
     });
@@ -557,10 +663,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.05 });
     observer.observe(canvas);
 
+    window.addEventListener('mousemove', (e) => {
+      const mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
+      const mouseY = (e.clientY / window.innerHeight - 0.5) * 0.4;
+      particlesMesh.rotation.x = mouseY;
+      particlesMesh.rotation.y = mouseX;
+    });
+
     function animate() {
       requestAnimationFrame(animate);
       if (isVisible) {
-        particlesMesh.rotation.y += 0.0008;
+        particlesMesh.rotation.y += 0.0006;
         renderer.render(scene, camera);
       }
     }
