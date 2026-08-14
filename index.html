@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manjunath | A Display of AI Projects — Tactile Keyboard Portfolio</title>
   <meta name="description" content="Manjunath - AI Engineer & Agentic Coder. Tactile mechanical keyboard portfolio inspired by portfolio-zxc featuring warm amber lighting, clockwork iris graphics, and AI/ML project displays.">
-  
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Fira+Code:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Devicon & Lucide Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <!-- Three.js for Background Canvas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -84,8 +84,6 @@
         <span class="logo-name">Manjunath</span>
         <span class="logo-sub">A Display of AI Projects</span>
       </a>
-
-      <!-- Navigation Links -->
       <nav class="nav-menu">
         <a href="#hero" class="nav-link active" data-section="hero"><span class="key-hint">ESC</span> Home</a>
         <a href="#about" class="nav-link" data-section="about"><span class="key-hint">A</span> About</a>
@@ -93,8 +91,6 @@
         <a href="#skills" class="nav-link" data-section="skills"><span class="key-hint">X</span> Skills</a>
         <a href="#contact" class="nav-link" data-section="contact"><span class="key-hint">C</span> Contact</a>
       </nav>
-
-      <!-- Sound & Controls -->
       <div class="nav-actions">
         <div class="sound-control-group">
           <button id="audioToggleBtn" class="nav-icon-btn active" title="Toggle Mechanical Audio">
@@ -106,7 +102,6 @@
             <option value="silent">Silent Red</option>
           </select>
         </div>
-
         <button id="cmdPaletteBtn" class="nav-cmd-btn" title="Command Palette (Ctrl+K)">
           <i data-lucide="terminal"></i>
           <span>Ctrl+K</span>
@@ -118,22 +113,17 @@
   <main>
     <!-- HERO DESK WORKSPACE WITH TACTILE KEYBOARD -->
     <section id="hero" class="desk-hero-section">
-      
-      <!-- DESK TOP DECOR OBJECTS (Matching screenshot) -->
+
+      <!-- DESK TOP DECOR OBJECTS -->
       <div class="desk-top-row">
-        <!-- Top Left: Cute Desk Figurines / Dumplings -->
         <div class="desk-figurines" title="Interactive Desk Dumplings">
           <div class="figurine f1"></div>
           <div class="figurine f2"></div>
         </div>
-
-        <!-- Top Header Text -->
         <div class="desk-header-title">
           <h2>Manjunath</h2>
           <p>A Display of AI & Agentic Projects</p>
         </div>
-
-        <!-- Top Center-Right: Acrylic Schematic Contact Card -->
         <div class="desk-contact-display" onclick="scrollToSection('contact')" title="Click to view Contact Details">
           <div class="schematic-screen">
             <div class="schematic-title">CONTACT DETAILS</div>
@@ -146,8 +136,6 @@
           </div>
           <div class="acrylic-stand"></div>
         </div>
-
-        <!-- Top Right: Ergonomic Mouse -->
         <div class="desk-mouse" id="deskMouse" title="Tactile Vertical Mouse">
           <div class="mouse-wheel"></div>
           <div class="mouse-led"></div>
@@ -158,10 +146,10 @@
       <div class="keyboard-wrapper">
         <div class="keyboard-bevel">
           <div class="keyboard-plate">
-            
-            <!-- ROW 0: FUNCTION ROW (ESC RED, F1-F12, F12 BEIGE) -->
+
+            <!-- ROW 0: FUNCTION ROW -->
             <div class="keyboard-row row-f">
-              <div class="keykey key-esc key-coral" data-key="Escape" title="ESC — Reset View">
+              <div class="keykey key-coral" data-key="Escape" title="ESC — Reset View">
                 <span class="key-legend">ESC</span>
               </div>
               <div class="keykey key-fn" data-key="F1"><span class="key-legend">F1</span></div>
@@ -186,23 +174,41 @@
             <div class="keyboard-row">
               <div class="keykey" data-key="Backquote"><span class="key-legend">` ~</span></div>
               <div class="keykey key-glowing-amber" data-key="Digit1" onclick="openProjectModal('p1')">
-                <span class="key-legend">1 !</span>
+                <span class="key-legend">1</span>
                 <span class="key-thumb-badge"><i data-lucide="bot"></i></span>
               </div>
               <div class="keykey key-glowing-amber" data-key="Digit2" onclick="openProjectModal('p2')">
-                <span class="key-legend">2 @</span>
-                <span class="key-thumb-badge"><i data-lucide="eye"></i></span>
+                <span class="key-legend">2</span>
+                <span class="key-thumb-badge"><i data-lucide="brain"></i></span>
               </div>
               <div class="keykey key-glowing-amber" data-key="Digit3" onclick="openProjectModal('p3')">
-                <span class="key-legend">3 #</span>
-                <span class="key-thumb-badge"><i data-lucide="layout"></i></span>
+                <span class="key-legend">3</span>
+                <span class="key-thumb-badge"><i data-lucide="activity"></i></span>
               </div>
-              <div class="keykey" data-key="Digit4"><span class="key-legend">4 $</span></div>
-              <div class="keykey" data-key="Digit5"><span class="key-legend">5 %</span></div>
-              <div class="keykey" data-key="Digit6"><span class="key-legend">6 ^</span></div>
-              <div class="keykey" data-key="Digit7"><span class="key-legend">7 &</span></div>
-              <div class="keykey" data-key="Digit8"><span class="key-legend">8 *</span></div>
-              <div class="keykey" data-key="Digit9"><span class="key-legend">9 (</span></div>
+              <div class="keykey key-glowing-amber" data-key="Digit4" onclick="openProjectModal('p4')">
+                <span class="key-legend">4</span>
+                <span class="key-thumb-badge"><i data-lucide="paintbrush"></i></span>
+              </div>
+              <div class="keykey key-glowing-amber" data-key="Digit5" onclick="openProjectModal('p5')">
+                <span class="key-legend">5</span>
+                <span class="key-thumb-badge"><i data-lucide="shield-alert"></i></span>
+              </div>
+              <div class="keykey key-glowing-amber" data-key="Digit6" onclick="openProjectModal('p6')">
+                <span class="key-legend">6</span>
+                <span class="key-thumb-badge"><i data-lucide="scan-text"></i></span>
+              </div>
+              <div class="keykey key-glowing-amber" data-key="Digit7" onclick="openProjectModal('p7')">
+                <span class="key-legend">7</span>
+                <span class="key-thumb-badge"><i data-lucide="pen-tool"></i></span>
+              </div>
+              <div class="keykey key-glowing-amber" data-key="Digit8" onclick="openProjectModal('p8')">
+                <span class="key-legend">8</span>
+                <span class="key-thumb-badge"><i data-lucide="server"></i></span>
+              </div>
+              <div class="keykey key-glowing-amber" data-key="Digit9" onclick="openProjectModal('p9')">
+                <span class="key-legend">9</span>
+                <span class="key-thumb-badge"><i data-lucide="heart-pulse"></i></span>
+              </div>
               <div class="keykey" data-key="Digit0"><span class="key-legend">0 )</span></div>
               <div class="keykey" data-key="Minus"><span class="key-legend">- _</span></div>
               <div class="keykey" data-key="Equal"><span class="key-legend">= +</span></div>
@@ -235,19 +241,16 @@
               <div class="keykey key-nav" data-key="PageDown"><span class="key-legend">pgdn</span></div>
             </div>
 
-            <!-- ROW 3: ASDFGHJKL + AMBER glowing "ABOUT" key -->
+            <!-- ROW 3: HOME ROW + AMBER "ABOUT" KEY -->
             <div class="keyboard-row">
               <div class="keykey key-novelty" data-key="CapsLock"><span class="key-legend">📜</span></div>
               <div class="keykey key-highlight" data-key="KeyA" onclick="scrollToSection('about')"><span class="key-legend">A</span></div>
               <div class="keykey" data-key="KeyS"><span class="key-legend">S</span></div>
               <div class="keykey" data-key="KeyD"><span class="key-legend">D</span></div>
               <div class="keykey" data-key="KeyF"><span class="key-legend">F</span></div>
-
-              <!-- AMBER GLOWING ABOUT KEY (matching screenshot) -->
               <div class="keykey key-wide-2 key-glowing-amber key-about-span" data-key="KeyG" onclick="scrollToSection('about')">
                 <span class="key-legend">ABOUT</span>
               </div>
-
               <div class="keykey" data-key="KeyH"><span class="key-legend">H</span></div>
               <div class="keykey" data-key="KeyJ"><span class="key-legend">J</span></div>
               <div class="keykey" data-key="KeyK"><span class="key-legend">K</span></div>
@@ -258,32 +261,22 @@
             <!-- ROW 4: Z X C NAVIGATION HIGHLIGHTS & "ME" KEY -->
             <div class="keyboard-row">
               <div class="keykey key-novelty" data-key="ShiftLeft"><span class="key-legend">🍖</span></div>
-              
-              <!-- KEY Z (PROJECTS) -->
               <div class="keykey key-highlight key-z" data-key="KeyZ" id="keyZ" onclick="scrollToSection('projects')">
                 <span class="key-legend">Z</span>
                 <span class="key-sub-label">PROJ</span>
               </div>
-
-              <!-- KEY X (SKILLS) -->
               <div class="keykey key-highlight key-x" data-key="KeyX" id="keyX" onclick="scrollToSection('skills')">
                 <span class="key-legend">X</span>
                 <span class="key-sub-label">SKILL</span>
               </div>
-
-              <!-- KEY C (CONTACT) -->
               <div class="keykey key-highlight key-c" data-key="KeyC" id="keyC" onclick="scrollToSection('contact')">
                 <span class="key-legend">C</span>
                 <span class="key-sub-label">CONT</span>
               </div>
-
               <div class="keykey" data-key="KeyV"><span class="key-legend">V</span></div>
-
-              <!-- AMBER GLOWING "ME" KEY (matching screenshot) -->
               <div class="keykey key-wide-1_75 key-glowing-amber" data-key="KeyB" onclick="scrollToSection('about')">
                 <span class="key-legend">ME</span>
               </div>
-
               <div class="keykey" data-key="KeyN"><span class="key-legend">N</span></div>
               <div class="keykey" data-key="KeyM"><span class="key-legend">M</span></div>
               <div class="keykey" data-key="Comma"><span class="key-legend">&lt; ,</span></div>
@@ -293,23 +286,18 @@
               <div class="keykey key-arrow" data-key="ArrowUp"><span class="key-legend">▲</span></div>
             </div>
 
-            <!-- ROW 5: NOVELTY KEYS + SPACEBAR + COFFEE BEAN ARROW KEYS -->
+            <!-- ROW 5: BOTTOM ROW + SPACEBAR + COFFEE ARROW KEYS -->
             <div class="keyboard-row">
               <div class="keykey key-novelty" data-key="ControlLeft"><span class="key-legend">🐱</span></div>
               <div class="keykey key-novelty" data-key="MetaLeft"><span class="key-legend">🍞</span></div>
               <div class="keykey key-novelty" data-key="AltLeft"><span class="key-legend">🥐</span></div>
-              
-              <!-- SPACEBAR -->
               <div class="keykey key-spacebar" data-key="Space" title="Press SPACE for RGB Wave">
                 <span class="spacebar-text">M A N J U N A T H  —  A I  E N G I N E E R</span>
               </div>
-
               <div class="keykey key-novelty" data-key="AltRight"><span class="key-legend">⊞</span></div>
               <div class="keykey key-novelty" data-key="Fn"><span class="key-legend">fn</span></div>
               <div class="keykey key-beige-glow" data-key="ControlRight"><span class="key-legend">control</span></div>
               <div class="key-cluster-gap"></div>
-              
-              <!-- COFFEE BEAN NOVELTY ARROW KEYS (matching screenshot) -->
               <div class="keykey key-arrow key-coffee" data-key="ArrowLeft"><span class="key-legend">☕</span></div>
               <div class="keykey key-arrow key-coffee" data-key="ArrowDown"><span class="key-legend">☕</span></div>
               <div class="keykey key-arrow key-coffee" data-key="ArrowRight"><span class="key-legend">☕</span></div>
@@ -318,7 +306,7 @@
           </div>
         </div>
 
-        <!-- ETCHED CLOCKWORK IRIS GRAPHICS ON DESK MAT (matching screenshot) -->
+        <!-- ETCHED CLOCKWORK IRIS GRAPHICS ON DESK MAT -->
         <div class="desk-mat-etched">
           <div class="clock-dial dial-1">
             <span class="roman">XII</span>
@@ -376,67 +364,232 @@
         <div class="section-header">
           <div class="section-tag">A DISPLAY OF PROJECTS</div>
           <h2 class="section-title">FEATURED ENGINEERING PROJECTS</h2>
-          <p class="section-subtitle">Click on any project card or illuminated keycap to inspect code, architecture, and live links.</p>
+          <p class="section-subtitle">Click on any project card or illuminated keycap (1–9) to inspect code, architecture, and live links.</p>
         </div>
 
-        <div class="projects-grid">
-          <!-- Project 1 -->
-          <article class="project-card-amber" onclick="openProjectModal('p1')">
-            <div class="card-badge">REV 1.0</div>
-            <div class="card-category"><i data-lucide="bot"></i> AI & RAG</div>
-            <h3>RAG & LLM Context Engine</h3>
-            <p>High-performance Retrieval-Augmented Generation engine utilizing Chroma Vector DB and semantic embeddings for document QA.</p>
+        <!-- Category Filter Tabs -->
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All Projects <span class="filter-count">9</span></button>
+          <button class="filter-tab" data-filter="ai">AI & LLMs <span class="filter-count">5</span></button>
+          <button class="filter-tab" data-filter="cv">Computer Vision <span class="filter-count">3</span></button>
+          <button class="filter-tab" data-filter="fullstack">Full-Stack <span class="filter-count">3</span></button>
+          <button class="filter-tab" data-filter="health">Health & Sensors <span class="filter-count">3</span></button>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid">
+
+          <!-- Project 1: AURORA -->
+          <article class="project-card-amber" data-categories="ai" data-project="p1" onclick="openProjectModal('p1')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 1</div>
+              <div class="card-category"><i data-lucide="bot"></i> AI & LLMs</div>
+            </div>
+            <h3>AURORA</h3>
+            <div class="card-subtitle">AI Avatar · Assistant · Voice AI · 3D UX</div>
+            <ul class="card-features">
+              <li>Next-generation 3D conversational agent leveraging LLMs and real-time speech processing</li>
+              <li>Advanced NLP engine for natural, context-aware human-machine interaction</li>
+              <li>Immersive avatar-based interface with high-fidelity facial synchronization</li>
+            </ul>
             <div class="card-tags">
               <span>Python</span>
-              <span>ChromaDB</span>
-              <span>LangChain</span>
+              <span>LLM</span>
+              <span>3D Models</span>
+              <span>Speech APIs</span>
+            </div>
+            <div class="card-actions">
+              <span class="card-action-btn coming-soon"><i data-lucide="clock"></i> Coming Soon</span>
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
+            </div>
+          </article>
+
+          <!-- Project 2: Memora -->
+          <article class="project-card-amber" data-categories="ai" data-project="p2" onclick="openProjectModal('p2')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 2</div>
+              <div class="card-category"><i data-lucide="brain"></i> AI & LLMs</div>
+            </div>
+            <h3>Memora — AI Agent</h3>
+            <div class="card-subtitle">AI Agent · RAG · Memory</div>
+            <ul class="card-features">
+              <li>Intelligent RAG-based agent with persistent semantic memory across sessions</li>
+              <li>Advanced retrieval pipeline utilizing vector embeddings and ChromaDB</li>
+              <li>Modular agent architecture designed for hyper-personalized user experiences</li>
+            </ul>
+            <div class="card-tags">
+              <span>Python</span>
+              <span>Vector DB</span>
+              <span>Semantic Search</span>
+            </div>
+            <div class="card-actions">
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
+            </div>
+          </article>
+
+          <!-- Project 3: HealthGuard AI -->
+          <article class="project-card-amber" data-categories="fullstack,health" data-project="p3" onclick="openProjectModal('p3')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 3</div>
+              <div class="card-category"><i data-lucide="activity"></i> Health & Full-Stack</div>
+            </div>
+            <h3>HealthGuard AI</h3>
+            <div class="card-subtitle">AI · HealthTech · Analytics</div>
+            <ul class="card-features">
+              <li>Healthcare audit automation utilizing predictive analytics for NABH pre-entry assessment</li>
+              <li>Intelligent gap analysis engine with automated compliance scoring and reporting</li>
+              <li>Comprehensive 250+ point accreditation dashboard for medical facilities</li>
+            </ul>
+            <div class="card-tags">
+              <span>Python</span>
               <span>FastAPI</span>
+              <span>React</span>
+              <span>PostgreSQL</span>
+            </div>
+            <div class="card-actions">
+              <a href="#" class="card-action-btn primary"><i data-lucide="external-link"></i> Live Demo</a>
             </div>
           </article>
 
-          <!-- Project 2 -->
-          <article class="project-card-amber" onclick="openProjectModal('p2')">
-            <div class="card-badge">REV 2.1</div>
-            <div class="card-category"><i data-lucide="eye"></i> COMPUTER VISION</div>
-            <h3>Real-Time Pose & Landmark Analyzer</h3>
-            <p>Computer vision tracking suite built with MediaPipe and OpenCV for 33-point joint skeletal tracking and motion analytics.</p>
-            <div class="card-tags">
-              <span>OpenCV</span>
-              <span>MediaPipe</span>
-              <span>Python</span>
-              <span>NumPy</span>
+          <!-- Project 4: Air Canva -->
+          <article class="project-card-amber" data-categories="cv,fullstack" data-project="p4" onclick="openProjectModal('p4')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 4</div>
+              <div class="card-category"><i data-lucide="paintbrush"></i> Computer Vision</div>
             </div>
-          </article>
-
-          <!-- Project 3 -->
-          <article class="project-card-amber" onclick="openProjectModal('p3')">
-            <div class="card-badge">REV 3.0</div>
-            <div class="card-category"><i data-lucide="layout"></i> WEB PLATFORM</div>
-            <h3>CBT Interactive Web Platform</h3>
-            <p>Cognitive behavioral web platform featuring real-time state management, interactive modules, and responsive UI architecture.</p>
+            <h3>Air Canva</h3>
+            <div class="card-subtitle">Comp. Vision · AI Interaction</div>
+            <ul class="card-features">
+              <li>Immersive zero-touch interface utilizing Computer Vision and MediaPipe for spatial creativity</li>
+              <li>Real-time finger tracking and gesture recognition with low-latency rendering</li>
+              <li>Innovative digital canvas experience driven by AI-powered human-computer interaction</li>
+            </ul>
             <div class="card-tags">
               <span>JavaScript</span>
-              <span>TypeScript</span>
-              <span>HTML5</span>
-              <span>CSS3</span>
+              <span>MediaPipe</span>
+              <span>Canvas API</span>
+            </div>
+            <div class="card-actions">
+              <a href="#" class="card-action-btn primary"><i data-lucide="external-link"></i> Live Demo</a>
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
             </div>
           </article>
 
-          <!-- Project 4 -->
-          <article class="project-card-amber" onclick="openProjectModal('p4')">
-            <div class="card-badge">REV 1.4</div>
-            <div class="card-category"><i data-lucide="briefcase"></i> FULL STACK</div>
-            <h3>Home Services Marketplace Platform</h3>
-            <p>Comprehensive platform connecting users with local service professionals with real-time booking and portal management.</p>
+          <!-- Project 5: Theft Detection -->
+          <article class="project-card-amber" data-categories="cv" data-project="p5" onclick="openProjectModal('p5')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 5</div>
+              <div class="card-category"><i data-lucide="shield-alert"></i> Computer Vision</div>
+            </div>
+            <h3>Theft Detection System</h3>
+            <div class="card-subtitle">Comp. Vision · AI Monitoring · Security</div>
+            <ul class="card-features">
+              <li>Real-time suspicious activity monitoring and automated threat detection</li>
+              <li>Intelligent video stream analysis utilizing custom-trained CV models</li>
+              <li>Automated security alerting system for critical perimeter monitoring</li>
+            </ul>
+            <div class="card-tags">
+              <span>Python</span>
+              <span>OpenCV</span>
+              <span>TensorFlow</span>
+              <span>Security</span>
+            </div>
+            <div class="card-actions">
+              <a href="#" class="card-action-btn primary"><i data-lucide="external-link"></i> Live Demo</a>
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
+            </div>
+          </article>
+
+          <!-- Project 6: Lucid OCR -->
+          <article class="project-card-amber" data-categories="ai,cv" data-project="p6" onclick="openProjectModal('p6')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 6</div>
+              <div class="card-category"><i data-lucide="scan-text"></i> AI & Computer Vision</div>
+            </div>
+            <h3>Lucid OCR</h3>
+            <div class="card-subtitle">AI OCR · NLP</div>
+            <ul class="card-features">
+              <li>High-accuracy AI OCR engine for instant multi-format text extraction</li>
+              <li>Proprietary NLP-enhanced post-processing for document sanitization</li>
+              <li>Lightweight, privacy-focused localized text recognition pipeline</li>
+            </ul>
+            <div class="card-tags">
+              <span>Python</span>
+              <span>Tesseract</span>
+              <span>OpenCV</span>
+            </div>
+            <div class="card-actions">
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
+            </div>
+          </article>
+
+          <!-- Project 7: AI Humanizer -->
+          <article class="project-card-amber" data-categories="ai,health" data-project="p7" onclick="openProjectModal('p7')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 7</div>
+              <div class="card-category"><i data-lucide="pen-tool"></i> AI & NLP</div>
+            </div>
+            <h3>AI Humanizer</h3>
+            <div class="card-subtitle">NLP · AI · Content</div>
+            <ul class="card-features">
+              <li>Proprietary NLP engine utilizing advanced linguistic modeling to neutralize AI-generated syntax</li>
+              <li>Dynamic semantic restructuring to achieve human-like stylistic variation while maintaining core intent</li>
+              <li>Context-aware content transformation designed to optimize readability and bypass automated detection</li>
+            </ul>
             <div class="card-tags">
               <span>TypeScript</span>
-              <span>React</span>
-              <span>Node.js</span>
-              <span>REST API</span>
+              <span>NLP</span>
+              <span>AI</span>
+            </div>
+            <div class="card-actions">
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
             </div>
           </article>
-        </div>
 
+          <!-- Project 8: Personal LLM -->
+          <article class="project-card-amber" data-categories="ai" data-project="p8" onclick="openProjectModal('p8')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 8</div>
+              <div class="card-category"><i data-lucide="server"></i> AI & LLMs</div>
+            </div>
+            <h3>Personal LLM</h3>
+            <div class="card-subtitle">Local AI · Hosting · Privacy</div>
+            <ul class="card-features">
+              <li>On-premise deployment of large-scale language models (LLaMA) via high-performance Linux infrastructure</li>
+              <li>Privacy-first AI environment ensuring zero-data-leakage through localized semantic processing</li>
+              <li>Modular LLM orchestration layer for advanced model tuning and bespoke system prompt engineering</li>
+            </ul>
+            <div class="card-tags">
+              <span>Python</span>
+              <span>Ollama</span>
+              <span>Linux</span>
+            </div>
+            <div class="card-actions">
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
+            </div>
+          </article>
+
+          <!-- Project 9: Fitness Tracker -->
+          <article class="project-card-amber" data-categories="fullstack,health" data-project="p9" onclick="openProjectModal('p9')">
+            <div class="card-top-row">
+              <div class="card-badge">KEY 9</div>
+              <div class="card-category"><i data-lucide="heart-pulse"></i> Health & Full-Stack</div>
+            </div>
+            <h3>Fitness Tracker</h3>
+            <div class="card-subtitle">Health · Storage · Analytics</div>
+            <ul class="card-features">
+              <li>Feature-rich health analytics platform for comprehensive biometric logging and BMI monitoring</li>
+              <li>Automated health milestone tracking with interactive time-series progress visualization</li>
+              <li>High-performance, zero-dependency architecture engineered for optimal load times and reliability</li>
+            </ul>
+            <div class="card-tags">
+              <span>HTML5</span>
+              <span>CSS3</span>
+              <span>JavaScript</span>
+            </div>
+            <div class="card-actions"></div>
+          </article>
+
+        </div>
       </div>
     </section>
 
@@ -454,10 +607,13 @@
             <ul class="skills-list">
               <li><i class="devicon-python-plain colored"></i> Python</li>
               <li>PyTorch</li>
+              <li>TensorFlow</li>
               <li>LangChain</li>
               <li>ChromaDB</li>
               <li>OpenCV</li>
               <li>MediaPipe</li>
+              <li>Tesseract</li>
+              <li>Ollama</li>
             </ul>
           </div>
           <div class="skills-category-card">
@@ -468,7 +624,9 @@
               <li><i class="devicon-react-original colored"></i> React.js</li>
               <li><i class="devicon-nodejs-plain colored"></i> Node.js</li>
               <li>FastAPI</li>
+              <li>PostgreSQL</li>
               <li>RESTful APIs</li>
+              <li>HTML5 / CSS3</li>
             </ul>
           </div>
           <div class="skills-category-card">
@@ -476,8 +634,10 @@
             <ul class="skills-list">
               <li><i class="devicon-git-plain colored"></i> Git & GitHub</li>
               <li><i class="devicon-docker-plain colored"></i> Docker</li>
+              <li><i class="devicon-linux-plain"></i> Linux</li>
               <li>VS Code</li>
               <li>CLI / Bash</li>
+              <li>Vite</li>
             </ul>
           </div>
         </div>
@@ -520,7 +680,7 @@
   <div id="terminalOverlay" class="terminal-overlay">
     <div class="terminal-window">
       <div class="terminal-header">
-        <div class="terminal-title">MJ_AMBER_CLI_v2.4</div>
+        <div class="terminal-title">MJ_AMBER_CLI_v3.0</div>
         <div class="terminal-hint">Press ESC to close</div>
       </div>
       <div class="terminal-body" id="terminalOutput">
