@@ -3,17 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manjunath — AI Engineer | Agentic Coder</title>
-  <meta name="description" content="Manjunath is an AI engineer and agentic coder building intelligent applications, AI agents, LLM systems, RAG pipelines, computer-vision solutions and modern digital experiences.">
-  <meta name="keywords" content="AI Engineer, Agentic AI, AI Developer, LLM Developer, RAG Developer, AI Agents, Computer Vision, Next.js Developer, Python Developer, Creative Developer">
+  <title>RGB Mechanical Keyboard & Desktop Monitor — Manjunath</title>
+  <meta name="description" content="Interactive 75% Mechanical RGB Keyboard simulator with desktop monitor screen displaying About Me, Selected Work, Tech Stack, and Terminal CLI.">
 
   <!-- Fonts: Space Grotesk, JetBrains Mono, Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Devicon & Lucide Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Three.js for Particle Background -->
@@ -21,641 +19,483 @@
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
-
-  <!-- JSON-LD Schema (PRD Section 32) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Manjunath",
-    "jobTitle": "AI Engineer & Agentic Coder",
-    "alumniOf": "JKKMCT",
-    "degree": "B.Tech in Artificial Intelligence and Data Science",
-    "url": "https://github.com/Manju1303",
-    "sameAs": [
-      "https://github.com/Manju1303",
-      "https://www.linkedin.com/in/manjunath-manjunath-248594352",
-      "https://www.instagram.com/mjx_1303"
-    ]
-  }
-  </script>
 </head>
-<body>
+<body class="rgb-mode-rainbow">
 
-  <!-- Custom Amber Cursor (PRD Section 23) -->
+  <!-- Custom Cursor -->
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- Background Canvas & Desk Texture -->
+  <!-- Background Canvas & Desk Surface -->
   <canvas id="bgCanvas"></canvas>
   <div class="desk-surface-overlay"></div>
 
-  <!-- 00 / TERMINAL INTRO MORPH GATE (PRD SECTION 3) -->
-  <div id="introTerminal" class="intro-terminal-overlay">
-    <div class="intro-terminal-box">
-      <div class="intro-terminal-header">
-        <div class="term-dots">
-          <div class="dot dot-red"></div>
-          <div class="dot dot-yellow"></div>
-          <div class="dot dot-green"></div>
+  <!-- TOP HEADER / RGB TOOLBAR -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="monitor"></i>
         </div>
-        <div class="term-title">MJ_MANJUNATH_CLI_v3.0</div>
-        <div class="term-title">PRESS ESC</div>
-      </div>
-      <div class="intro-terminal-body">
-        <div class="intro-term-line welcome">Manjunath's Interactive Portfolio.</div>
-        <div class="intro-term-line cyan">AI Engineer · Agentic Coder · Creative Developer</div>
-        <div class="intro-term-line">Type <span class="cmd-highlight">start</span> or press Enter to launch the interactive portfolio workspace.</div>
-        <div class="intro-prompt-row">
-          <span class="intro-prompt-label">C:\Manjunath\Portfolio&gt;</span>
-          <input type="text" id="introTerminalInput" class="intro-prompt-input" placeholder="Type start..." autofocus>
+        <div class="brand-text">
+          <span class="title">MANJUNATH</span>
+          <span class="subtitle">AI ENGINEER · AGENTIC CODER WORKSPACE</span>
         </div>
       </div>
-      <div class="intro-enter-bar">
-        <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">Tactile Keyboard & Audio Active</span>
-        <button id="enterWorkspaceBtn" class="btn-morph-enter">
-          <span>START WORKSPACE</span>
-          <i data-lucide="corner-down-left"></i>
-        </button>
-      </div>
-    </div>
-  </div>
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="#hero" class="nav-logo">
-        <span class="logo-name">MANJUNATH</span>
-        <span class="logo-tag">AI ENGINEER</span>
-      </a>
+      <!-- CONTROLS GROUP -->
+      <div class="toolbar-controls">
+        <!-- RGB Mode Selector -->
+        <div class="control-group">
+          <label class="control-label"><i data-lucide="sparkles"></i> RGB MODE</label>
+          <select id="rgbModeSelect" class="select-pill">
+            <option value="rainbow">🌈 Rainbow Wave</option>
+            <option value="reactive">⚡ Key Reactive</option>
+            <option value="cyber">🌌 Cyberpunk Neon</option>
+            <option value="matrix">💥 Matrix Green</option>
+            <option value="breathing">🧘 RGB Breathing</option>
+            <option value="amber">🔥 Amber Sunset</option>
+          </select>
+        </div>
 
-      <div class="status-badge">
-        <span class="status-dot"></span>
-        <span>STATUS: ONLINE</span>
-      </div>
-
-      <div class="nav-actions">
-        <div class="sound-control-group">
-          <button id="audioToggleBtn" class="nav-icon-btn active" title="Toggle Mechanical Audio">
-            <i data-lucide="volume-2" id="audioIcon"></i>
+        <!-- RGB Light Toggle -->
+        <div class="control-group">
+          <button id="rgbToggleBtn" class="toggle-pill active" title="Toggle RGB Lighting">
+            <i data-lucide="sun"></i>
+            <span>RGB ON</span>
           </button>
-          <select id="soundProfileSelect" class="sound-select">
+        </div>
+
+        <!-- Sound Profile -->
+        <div class="control-group">
+          <label class="control-label"><i data-lucide="volume-2"></i> SWITCH SOUND</label>
+          <select id="soundProfileSelect" class="select-pill">
             <option value="thock">Thocky Amber</option>
             <option value="clicky">Blue Clicky</option>
             <option value="silent">Silent Red</option>
+            <option value="creamy">Creamy Linear</option>
           </select>
         </div>
-        <button id="cmdPaletteBtn" class="nav-cmd-btn" title="Command Palette (Ctrl+K)">
-          <i data-lucide="terminal"></i>
-          <span>Ctrl+K</span>
-        </button>
+
+        <!-- Audio Toggle -->
+        <div class="control-group">
+          <button id="audioToggleBtn" class="icon-btn active" title="Toggle Switch Sound">
+            <i data-lucide="volume-2" id="audioIcon"></i>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- 01 / EDITORIAL HERO SECTION (PRD SECTION 6) -->
-    <section id="hero" class="editorial-hero-section">
-      <div class="hero-tag-row">
-        <span class="hero-tag">01 // MANJUNATH — AI ENGINEER & AGENTIC CODER</span>
-        <div class="hero-line-accent"></div>
+  <!-- MAIN WORKSPACE VIEWPORT -->
+  <main class="workspace-viewport">
+
+    <!-- DESKTOP MONITOR DISPLAY CHASSIS -->
+    <div class="desktop-monitor-chassis">
+      
+      <!-- Monitor Screen Container -->
+      <div class="monitor-screen-bezel">
+        <div class="screen-glass-glare"></div>
+
+        <!-- MONITOR SCREEN HEADER / TABS -->
+        <div class="monitor-nav-bar">
+          <div class="monitor-logo">
+            <span class="dot-live"></span>
+            <span>MJ_MONITOR_v3.0</span>
+          </div>
+
+          <div class="monitor-nav-tabs">
+            <button class="nav-tab active" data-view="about" id="tabAboutBtn">
+              <span class="key-badge">A</span> ABOUT ME
+            </button>
+            <button class="nav-tab" data-view="work" id="tabWorkBtn">
+              <span class="key-badge">W</span> WORK
+            </button>
+            <button class="nav-tab" data-view="stack" id="tabStackBtn">
+              <span class="key-badge">S</span> STACK
+            </button>
+            <button class="nav-tab" data-view="contact" id="tabContactBtn">
+              <span class="key-badge">C</span> CONTACT
+            </button>
+            <button class="nav-tab" data-view="terminal" id="tabTerminalBtn">
+              <span class="key-badge">T</span> CLI TERMINAL
+            </button>
+          </div>
+
+          <div class="screen-clock" id="screenClock">20:58:56</div>
+        </div>
+
+        <!-- MONITOR CONTENT VIEWS -->
+        <div class="monitor-screen-content">
+
+          <!-- 01 / ABOUT ME VIEW -->
+          <div class="monitor-view active" id="viewAbout">
+            <div class="about-grid">
+              
+              <!-- Left Column: Avatar & Quick Info -->
+              <div class="about-avatar-card">
+                <div class="avatar-frame">
+                  <div class="avatar-circle">
+                    <!-- Stylized High-Tech AI Developer Portrait Avatar -->
+                    <svg viewBox="0 0 100 100" class="avatar-svg">
+                      <circle cx="50" cy="50" r="48" fill="#121118" stroke="#00f0ff" stroke-width="2"/>
+                      <circle cx="50" cy="38" r="20" fill="#d6a928"/>
+                      <path d="M 20 85 C 20 62, 80 62, 80 85 Z" fill="#00f0ff" opacity="0.85"/>
+                    </svg>
+                  </div>
+                  <div class="avatar-ring-glow"></div>
+                </div>
+                <div class="avatar-status">
+                  <span class="status-dot"></span> AVAILABLE FOR AI ROLES
+                </div>
+                <div class="degree-badge">
+                  <i data-lucide="graduation-cap"></i> B.Tech AI & Data Science
+                </div>
+              </div>
+
+              <!-- Right Column: Bio & Competencies -->
+              <div class="about-details-card">
+                <h1 class="about-title">
+                  ABOUT <span class="gradient-text">ME.</span>
+                </h1>
+                <h3 class="about-subtitle">AI & Data Science Engineer</h3>
+
+                <p class="about-bio">
+                  I am an engineering graduate with a <strong>B.Tech in Artificial Intelligence and Data Science</strong>, specializing in architecting scalable AI applications, LLM-powered systems, and intelligent digital products. I combine rigorous machine learning foundations with full-stack web engineering to transform complex algorithms into production-ready software.
+                </p>
+
+                <!-- Core Technical Competencies Table/Grid -->
+                <div class="competencies-block">
+                  <div class="comp-header">
+                    <i data-lucide="shield-check" class="comp-icon"></i>
+                    <span>Core Technical Competencies</span>
+                  </div>
+
+                  <div class="comp-table">
+                    <!-- Row 1 -->
+                    <div class="comp-row">
+                      <div class="comp-category">
+                        <span class="arrow">►</span> AI &amp; LLM Architecture:
+                      </div>
+                      <div class="comp-details">
+                        RAG Systems, Vector DBs (ChromaDB), Semantic Search, Prompt Engineering
+                      </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="comp-row">
+                      <div class="comp-category">
+                        <span class="arrow">►</span> Computer Vision &amp; ML:
+                      </div>
+                      <div class="comp-details">
+                        MediaPipe, OpenCV, Real-time Pose &amp; Landmark Estimation, Predictive Analytics
+                      </div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="comp-row">
+                      <div class="comp-category">
+                        <span class="arrow">►</span> Full-Stack Development:
+                      </div>
+                      <div class="comp-details">
+                        Python, React.js, Node.js, Express, JavaScript (ES6+), HTML5/CSS3
+                      </div>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="comp-row">
+                      <div class="comp-category">
+                        <span class="arrow">►</span> DevOps &amp; Cloud:
+                      </div>
+                      <div class="comp-details">
+                        Docker Containerization, Git/GitHub, Linux/Ubuntu CLI, VPC, Subnets, SSH
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <p class="about-footer-note">
+                  My development experience spans the end-to-end AI software lifecycle — from problem formulation, dataset preparation, and RAG retrieval pipelines to interactive WebGL user interfaces.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 02 / WORK VIEW -->
+          <div class="monitor-view" id="viewWork">
+            <h2 class="view-heading"><i data-lucide="code-2"></i> SELECTED WORK & AI PROJECTS</h2>
+            <div class="work-cards-grid">
+              <div class="work-card">
+                <span class="card-num">01</span>
+                <h4>AURORA</h4>
+                <p>3D Conversational AI Voice Assistant with Avatar Sync & LLM NLP pipeline.</p>
+                <div class="tags"><span>Next.js</span><span>LLM</span><span>Three.js</span></div>
+              </div>
+              <div class="work-card">
+                <span class="card-num">02</span>
+                <h4>MEMORA</h4>
+                <p>Persistent Memory RAG AI Agent utilizing ChromaDB & Vector Embeddings.</p>
+                <div class="tags"><span>Python</span><span>RAG</span><span>ChromaDB</span></div>
+              </div>
+              <div class="work-card">
+                <span class="card-num">03</span>
+                <h4>HEALTHGUARD AI</h4>
+                <p>Healthcare NABH Audit Intelligence Platform with 82.4% compliance score engine.</p>
+                <div class="tags"><span>FastAPI</span><span>React</span><span>PostgreSQL</span></div>
+              </div>
+              <div class="work-card">
+                <span class="card-num">04</span>
+                <h4>PROJECT SENTINEL</h4>
+                <p>Autonomous AI Surveillance Drone with YOLO real-time vision telemetry.</p>
+                <div class="tags"><span>Computer Vision</span><span>YOLO</span><span>Python</span></div>
+              </div>
+              <div class="work-card">
+                <span class="card-num">05</span>
+                <h4>PERSONAL LLM</h4>
+                <p>On-premise zero-data-leakage Ollama instance on high-performance Linux server.</p>
+                <div class="tags"><span>Ollama</span><span>Linux</span><span>LLM</span></div>
+              </div>
+              <div class="work-card">
+                <span class="card-num">06</span>
+                <h4>AIR CANVA</h4>
+                <p>Zero-touch spatial gesture drawing canvas using Computer Vision & MediaPipe.</p>
+                <div class="tags"><span>MediaPipe</span><span>JavaScript</span><span>Canvas</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03 / STACK VIEW -->
+          <div class="monitor-view" id="viewStack">
+            <h2 class="view-heading"><i data-lucide="cpu"></i> TECH STACK & ENGINEERING ECOSYSTEM</h2>
+            <div class="monitor-stack-grid">
+              <div class="stack-box"><i class="devicon-python-plain colored"></i><span>Python</span></div>
+              <div class="stack-box"><i class="devicon-typescript-plain colored"></i><span>TypeScript</span></div>
+              <div class="stack-box"><i class="devicon-javascript-plain colored"></i><span>JavaScript</span></div>
+              <div class="stack-box"><i class="devicon-react-original colored"></i><span>React.js</span></div>
+              <div class="stack-box"><i class="devicon-nextjs-plain"></i><span>Next.js</span></div>
+              <div class="stack-box"><i data-lucide="zap"></i><span>FastAPI</span></div>
+              <div class="stack-box"><i data-lucide="database"></i><span>ChromaDB</span></div>
+              <div class="stack-box"><i data-lucide="link"></i><span>LangChain</span></div>
+              <div class="stack-box"><i data-lucide="eye"></i><span>OpenCV</span></div>
+              <div class="stack-box"><i data-lucide="hand"></i><span>MediaPipe</span></div>
+              <div class="stack-box"><i data-lucide="server"></i><span>Ollama / LLMs</span></div>
+              <div class="stack-box"><i class="devicon-postgresql-plain colored"></i><span>PostgreSQL</span></div>
+              <div class="stack-box"><i class="devicon-docker-plain colored"></i><span>Docker</span></div>
+              <div class="stack-box"><i data-lucide="box"></i><span>Three.js</span></div>
+            </div>
+          </div>
+
+          <!-- 04 / CONTACT VIEW -->
+          <div class="monitor-view" id="viewContact">
+            <h2 class="view-heading"><i data-lucide="mail"></i> GET IN TOUCH WITH MANJUNATH</h2>
+            <p class="contact-intro">Available for full-time AI Engineering roles, LLM/RAG projects, and full-stack technical collaborations.</p>
+            <div class="monitor-contact-grid">
+              <a href="mailto:manjunath.work.ai@gmail.com" class="contact-card-btn">
+                <i data-lucide="mail"></i>
+                <div class="text">
+                  <span class="label">EMAIL</span>
+                  <span class="val">manjunath.work.ai@gmail.com</span>
+                </div>
+              </a>
+              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="contact-card-btn">
+                <i data-lucide="github"></i>
+                <div class="text">
+                  <span class="label">GITHUB</span>
+                  <span class="val">github.com/Manju1303</span>
+                </div>
+              </a>
+              <a href="https://www.linkedin.com/in/manjunath-manjunath-248594352" target="_blank" rel="noopener" class="contact-card-btn">
+                <i data-lucide="linkedin"></i>
+                <div class="text">
+                  <span class="label">LINKEDIN</span>
+                  <span class="val">linkedin.com/in/manjunath</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- 05 / CLI TERMINAL VIEW -->
+          <div class="monitor-view" id="viewTerminal">
+            <div class="terminal-monitor-box">
+              <div class="term-log" id="monitorTermLog">
+                <div class="line cyan">Manjunath's Interactive CLI Monitor Terminal v3.0</div>
+                <div class="line">Type <span class="highlight">help</span>, <span class="highlight">about</span>, <span class="highlight">projects</span>, <span class="highlight">stack</span>, or <span class="highlight">clear</span>.</div>
+              </div>
+              <div class="term-input-line">
+                <span class="prompt">C:\Manjunath&gt;</span>
+                <input type="text" id="monitorTermInput" placeholder="Type command here..." autofocus>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MONITOR BOTTOM CHASSIS & POWER LIGHT -->
+        <div class="monitor-bottom-bar">
+          <div class="brand-badge">MANJUNATH DISPLAY 4K</div>
+          <div class="power-btn">
+            <span class="power-led"></span> POWER
+          </div>
+        </div>
+
       </div>
 
-      <h1 class="hero-display-title">
-        I BUILD<br>
-        <span class="gradient-text">INTELLIGENT</span><br>
-        THINGS.
-      </h1>
+      <!-- MONITOR METALLIC STAND -->
+      <div class="monitor-stand-neck"></div>
+      <div class="monitor-stand-base"></div>
+    </div>
 
-      <div class="hero-subtitle-row">
-        <p class="hero-bio-lead">
-          Building intelligent applications, AI agents, LLM systems, RAG pipelines, computer-vision solutions and modern digital experiences.
-        </p>
-
-        <div class="hero-quick-stats">
-          <div class="stat-box">
-            <div class="stat-num">11+</div>
-            <div class="stat-label">AI & FULL-STACK PROJECTS</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num">B.Tech</div>
-            <div class="stat-label">AI & DATA SCIENCE (JKKMCT)</div>
-          </div>
+    <!-- LIVE TYPING DISPLAY STRIP -->
+    <div class="typing-display-card">
+      <div class="display-header">
+        <div class="header-tag"><i data-lucide="keyboard"></i> LIVE KEYBOARD INPUT DISPLAY</div>
+        <div class="header-actions">
+          <button id="clearTextBtn" class="small-btn"><i data-lucide="trash-2"></i> CLEAR</button>
         </div>
       </div>
-    </section>
-
-    <!-- SIGNATURE FLOATING KEYBOARD DOCK (PRD SECTION 7) -->
-    <div class="keyboard-dock-widget" title="Signature Amber Keyboard Dock — Use Keys A, W, I, S, J, C, T">
-      <div class="dock-header">KEYBOARD NAVIGATION DOCK</div>
-      <div class="dock-keys-row">
-        <div class="dock-key" data-key="KeyA" onclick="scrollToSection('about')">
-          <span class="dock-key-letter">A</span>
-          <span class="dock-key-label">ABOUT</span>
-        </div>
-        <div class="dock-key" data-key="KeyW" onclick="scrollToSection('projects')">
-          <span class="dock-key-letter">W</span>
-          <span class="dock-key-label">WORK</span>
-        </div>
-        <div class="dock-key" data-key="KeyI" onclick="scrollToSection('ai-systems')">
-          <span class="dock-key-letter">I</span>
-          <span class="dock-key-label">AI</span>
-        </div>
-        <div class="dock-key" data-key="KeyS" onclick="scrollToSection('stack')">
-          <span class="dock-key-letter">S</span>
-          <span class="dock-key-label">STACK</span>
-        </div>
-        <div class="dock-key" data-key="KeyJ" onclick="scrollToSection('journey')">
-          <span class="dock-key-letter">J</span>
-          <span class="dock-key-label">JOURNEY</span>
-        </div>
-        <div class="dock-key" data-key="KeyC" onclick="scrollToSection('contact')">
-          <span class="dock-key-letter">C</span>
-          <span class="dock-key-label">CONTACT</span>
-        </div>
-        <div class="dock-key" data-key="KeyT" onclick="toggleTerminal()">
-          <span class="dock-key-letter">T</span>
-          <span class="dock-key-label">CLI</span>
-        </div>
+      <div class="display-body">
+        <span class="prompt-prefix">MJ_KEYBOARD&gt;</span>
+        <span id="typedTextDisplay" class="typed-text"></span>
+        <span class="blinking-cursor">█</span>
       </div>
     </div>
 
-    <!-- 02 / ABOUT SECTION (PRD SECTION 8) -->
-    <section id="about" class="about-section">
-      <div class="statement-block">
-        <div class="statement-num">01 / ABOUT</div>
-        <h2 class="statement-title">"I DON'T JUST USE AI.<br>I BUILD SYSTEMS AROUND IT."</h2>
-        <p class="statement-desc">
-          I'm Manjunath, an AI & Data Science developer focused on building intelligent applications and digital systems. My work sits at the intersection of artificial intelligence, agentic systems, LLM applications, RAG, computer vision and full-stack development.
-        </p>
-      </div>
+    <!-- MECHANICAL KEYBOARD CHASSIS -->
+    <div class="keyboard-chassis" id="keyboardChassis">
+      
+      <!-- Ambient RGB Underglow Border -->
+      <div class="rgb-underglow"></div>
 
-      <!-- Marquee Track -->
-      <div class="marquee-wrapper">
-        <div class="marquee-track">
-          <div class="marquee-item"><i data-lucide="brain"></i> AGENTIC AI</div>
-          <div class="marquee-item"><i data-lucide="database"></i> VECTOR DB RAG</div>
-          <div class="marquee-item"><i data-lucide="eye"></i> COMPUTER VISION</div>
-          <div class="marquee-item"><i data-lucide="code"></i> FASTAPI & REACT</div>
-          <div class="marquee-item"><i data-lucide="server"></i> LOCAL OLLAMA LLMS</div>
-          <div class="marquee-item"><i data-lucide="cpu"></i> MEDIAPIPE GESTURES</div>
-          <div class="marquee-item"><i data-lucide="brain"></i> AGENTIC AI</div>
-          <div class="marquee-item"><i data-lucide="database"></i> VECTOR DB RAG</div>
-          <div class="marquee-item"><i data-lucide="eye"></i> COMPUTER VISION</div>
+      <!-- OLED STATUS DISPLAY PANEL (Top Right of Bezel) -->
+      <div class="oled-panel">
+        <div class="oled-row">
+          <span class="oled-label">KEY:</span>
+          <span class="oled-value" id="oledKey">A</span>
+        </div>
+        <div class="oled-row">
+          <span class="oled-label">CODE:</span>
+          <span class="oled-value" id="oledCode">65</span>
+        </div>
+        <div class="oled-row">
+          <span class="oled-label">VIEW:</span>
+          <span class="oled-value" id="oledRgb">ABOUT</span>
+        </div>
+        <div class="oled-row">
+          <span class="oled-label">COUNT:</span>
+          <span class="oled-value" id="oledCount">0</span>
         </div>
       </div>
 
-      <!-- Capability Kinetic Words -->
-      <div class="capability-grid">
-        <div class="cap-word">AI AGENTS</div>
-        <div class="cap-word">LLMs</div>
-        <div class="cap-word">RAG PIPELINES</div>
-        <div class="cap-word">COMPUTER VISION</div>
-        <div class="cap-word">FULL-STACK</div>
-        <div class="cap-word">CREATIVE TECHNOLOGY</div>
-      </div>
-    </section>
+      <!-- KEYCAPS GRID (75% LAYOUT) -->
+      <div class="keycaps-container">
 
-    <!-- 03 / SELECTED WORK (PRD SECTION 9 & 10) -->
-    <section id="projects" class="projects-section">
-      <div class="section-tag">02 / SELECTED WORK</div>
-      <h2 class="section-title">THINGS I'VE BUILT</h2>
-      <p class="section-subtitle">Click on any project card or press keys 1–6 to inspect cinematic architecture case studies.</p>
+        <!-- ROW 1: ESC + FUNCTION ROW -->
+        <div class="key-row row-1">
+          <div class="keykey key-esc accent-amber" data-key="Escape"><span class="legend">ESC</span></div>
+          <div class="keykey" data-key="F1"><span class="legend">F1</span></div>
+          <div class="keykey" data-key="F2"><span class="legend">F2</span></div>
+          <div class="keykey" data-key="F3"><span class="legend">F3</span></div>
+          <div class="keykey" data-key="F4"><span class="legend">F4</span></div>
+          <div class="keykey" data-key="F5"><span class="legend">F5</span></div>
+          <div class="keykey" data-key="F6"><span class="legend">F6</span></div>
+          <div class="keykey" data-key="F7"><span class="legend">F7</span></div>
+          <div class="keykey" data-key="F8"><span class="legend">F8</span></div>
+          <div class="keykey" data-key="F9"><span class="legend">F9</span></div>
+          <div class="keykey" data-key="F10"><span class="legend">F10</span></div>
+          <div class="keykey" data-key="F11"><span class="legend">F11</span></div>
+          <div class="keykey" data-key="F12"><span class="legend">F12</span></div>
+          <div class="keykey key-sm" data-key="Delete"><span class="legend">DEL</span></div>
+          <div class="keykey key-sm accent-cyan" data-key="PrintScreen"><span class="legend">RGB</span></div>
+        </div>
 
-      <!-- Filter Tabs -->
-      <div class="filter-tabs">
-        <button class="filter-tab active" data-filter="all">All Projects <span class="filter-count">11</span></button>
-        <button class="filter-tab" data-filter="ai">AI & LLMs <span class="filter-count">5</span></button>
-        <button class="filter-tab" data-filter="cv">Computer Vision <span class="filter-count">3</span></button>
-        <button class="filter-tab" data-filter="fullstack">Full-Stack <span class="filter-count">3</span></button>
-        <button class="filter-tab" data-filter="health">Health & Systems <span class="filter-count">3</span></button>
-      </div>
+        <!-- ROW 2: NUMBER ROW -->
+        <div class="key-row row-2">
+          <div class="keykey" data-key="Backquote"><span class="sub">~</span><span class="legend">`</span></div>
+          <div class="keykey" data-key="Digit1"><span class="sub">!</span><span class="legend">1</span></div>
+          <div class="keykey" data-key="Digit2"><span class="sub">@</span><span class="legend">2</span></div>
+          <div class="keykey" data-key="Digit3"><span class="sub">#</span><span class="legend">3</span></div>
+          <div class="keykey" data-key="Digit4"><span class="sub">$</span><span class="legend">4</span></div>
+          <div class="keykey" data-key="Digit5"><span class="sub">%</span><span class="legend">5</span></div>
+          <div class="keykey" data-key="Digit6"><span class="sub">^</span><span class="legend">6</span></div>
+          <div class="keykey" data-key="Digit7"><span class="sub">&amp;</span><span class="legend">7</span></div>
+          <div class="keykey" data-key="Digit8"><span class="sub">*</span><span class="legend">8</span></div>
+          <div class="keykey" data-key="Digit9"><span class="sub">(</span><span class="legend">9</span></div>
+          <div class="keykey" data-key="Digit0"><span class="sub">)</span><span class="legend">0</span></div>
+          <div class="keykey" data-key="Minus"><span class="sub">_</span><span class="legend">-</span></div>
+          <div class="keykey" data-key="Equal"><span class="sub">+</span><span class="legend">=</span></div>
+          <div class="keykey key-backspace key-wide-2" data-key="Backspace"><span class="legend">BACKSPACE</span></div>
+        </div>
 
-      <div class="projects-grid" id="projectsGrid">
+        <!-- ROW 3: QWERTY -->
+        <div class="key-row row-3">
+          <div class="keykey key-tab key-wide-1-5" data-key="Tab"><span class="legend">TAB</span></div>
+          <div class="keykey" data-key="KeyQ"><span class="legend">Q</span></div>
+          <div class="keykey accent-amber" data-key="KeyW" title="[W] WORK VIEW"><span class="sub">WORK</span><span class="legend">W</span></div>
+          <div class="keykey" data-key="KeyE"><span class="legend">E</span></div>
+          <div class="keykey" data-key="KeyR"><span class="legend">R</span></div>
+          <div class="keykey accent-cyan" data-key="KeyT" title="[T] CLI TERMINAL"><span class="sub">CLI</span><span class="legend">T</span></div>
+          <div class="keykey" data-key="KeyY"><span class="legend">Y</span></div>
+          <div class="keykey" data-key="KeyU"><span class="legend">U</span></div>
+          <div class="keykey" data-key="KeyI"><span class="legend">I</span></div>
+          <div class="keykey" data-key="KeyO"><span class="legend">O</span></div>
+          <div class="keykey" data-key="KeyP"><span class="legend">P</span></div>
+          <div class="keykey" data-key="BracketLeft"><span class="sub">{</span><span class="legend">[</span></div>
+          <div class="keykey" data-key="BracketRight"><span class="sub">}</span><span class="legend">]</span></div>
+          <div class="keykey key-wide-1-5" data-key="Backslash"><span class="sub">|</span><span class="legend">\</span></div>
+        </div>
 
-        <!-- 01 — AURORA -->
-        <article class="project-card-amber" data-categories="ai" data-project="p1" onclick="openProjectModal('p1')">
-          <div class="card-top-row">
-            <div class="card-badge">01 // AURORA</div>
-            <div class="card-category"><i data-lucide="bot"></i> AI & LLMs</div>
-          </div>
-          <h3>AURORA</h3>
-          <div class="card-subtitle">3D AI Voice Assistant · Avatar UX</div>
-          <ul class="card-features">
-            <li>Next-generation 3D conversational agent leveraging LLMs and real-time speech processing</li>
-            <li>Advanced NLP engine for natural, context-aware human-machine interaction</li>
-            <li>Immersive avatar-based interface with high-fidelity facial synchronization</li>
-          </ul>
-          <div class="card-tags">
-            <span>AI</span>
-            <span>LLM</span>
-            <span>VOICE</span>
-            <span>3D</span>
-          </div>
-          <div class="card-actions">
-            <span class="card-action-btn coming-soon"><i data-lucide="clock"></i> Coming Soon</span>
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
+        <!-- ROW 4: ASDF / HOME ROW -->
+        <div class="key-row row-4">
+          <div class="keykey key-caps key-wide-1-75" data-key="CapsLock"><span class="legend">CAPS</span></div>
+          <div class="keykey accent-amber" data-key="KeyA" id="keyAboutBtn" title="[A] ABOUT ME"><span class="sub">ABOUT</span><span class="legend">A</span></div>
+          <div class="keykey accent-amber" data-key="KeyS" title="[S] TECH STACK"><span class="sub">STACK</span><span class="legend">S</span></div>
+          <div class="keykey" data-key="KeyD"><span class="legend">D</span></div>
+          <div class="keykey" data-key="KeyF"><span class="legend">F</span></div>
+          <div class="keykey" data-key="KeyG"><span class="legend">G</span></div>
+          <div class="keykey" data-key="KeyH"><span class="legend">H</span></div>
+          <div class="keykey" data-key="KeyJ"><span class="legend">J</span></div>
+          <div class="keykey" data-key="KeyK"><span class="legend">K</span></div>
+          <div class="keykey" data-key="KeyL"><span class="legend">L</span></div>
+          <div class="keykey" data-key="Semicolon"><span class="sub">:</span><span class="legend">;</span></div>
+          <div class="keykey" data-key="Quote"><span class="sub">"</span><span class="legend">'</span></div>
+          <div class="keykey key-enter key-wide-2-25 accent-amber" data-key="Enter"><span class="legend">ENTER</span></div>
+        </div>
 
-        <!-- 02 — MEMORA -->
-        <article class="project-card-amber" data-categories="ai" data-project="p2" onclick="openProjectModal('p2')">
-          <div class="card-top-row">
-            <div class="card-badge">02 // MEMORA</div>
-            <div class="card-category"><i data-lucide="brain"></i> AI & LLMs</div>
-          </div>
-          <h3>MEMORA</h3>
-          <div class="card-subtitle">Persistent Memory AI Agent</div>
-          <ul class="card-features">
-            <li>Intelligent RAG-based agent with persistent semantic memory across sessions</li>
-            <li>Advanced retrieval pipeline utilizing vector embeddings and ChromaDB</li>
-            <li>Modular agent architecture designed for hyper-personalized user experiences</li>
-          </ul>
-          <div class="card-tags">
-            <span>RAG</span>
-            <span>ChromaDB</span>
-            <span>LLM</span>
-            <span>Python</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
+        <!-- ROW 5: ZXCV / SHIFT ROW -->
+        <div class="key-row row-5">
+          <div class="keykey key-shift-left key-wide-2-25" data-key="ShiftLeft"><span class="legend">SHIFT</span></div>
+          <div class="keykey" data-key="KeyZ"><span class="legend">Z</span></div>
+          <div class="keykey" data-key="KeyX"><span class="legend">X</span></div>
+          <div class="keykey accent-amber" data-key="KeyC" title="[C] CONTACT"><span class="sub">CONTACT</span><span class="legend">C</span></div>
+          <div class="keykey" data-key="KeyV"><span class="legend">V</span></div>
+          <div class="keykey" data-key="KeyB"><span class="legend">B</span></div>
+          <div class="keykey" data-key="KeyN"><span class="legend">N</span></div>
+          <div class="keykey" data-key="KeyM"><span class="legend">M</span></div>
+          <div class="keykey" data-key="Comma"><span class="sub">&lt;</span><span class="legend">,</span></div>
+          <div class="keykey" data-key="Period"><span class="sub">&gt;</span><span class="legend">.</span></div>
+          <div class="keykey" data-key="Slash"><span class="sub">?</span><span class="legend">/</span></div>
+          <div class="keykey key-shift-right key-wide-2-75" data-key="ShiftRight"><span class="legend">SHIFT</span></div>
+        </div>
 
-        <!-- 03 — HEALTHGUARD AI (PRD SECTION 15) -->
-        <article class="project-card-amber" data-categories="fullstack,health" data-project="p3" onclick="openProjectModal('p3')">
-          <div class="card-top-row">
-            <div class="card-badge">03 // HEALTHGUARD</div>
-            <div class="card-category"><i data-lucide="activity"></i> Health & Full-Stack</div>
-          </div>
-          <h3>HEALTHGUARD AI</h3>
-          <div class="card-subtitle">NABH Compliance Intelligence</div>
-          <div class="hud-telemetry-box">
-            <span>NABH AUDIT SCORE</span>
-            <span class="hud-score">82.4%</span>
-          </div>
-          <ul class="card-features">
-            <li>Healthcare audit automation utilizing predictive analytics for NABH pre-entry assessment</li>
-            <li>Intelligent gap analysis engine with automated compliance scoring and reporting</li>
-            <li>Comprehensive 250+ point accreditation dashboard for medical facilities</li>
-          </ul>
-          <div class="card-tags">
-            <span>AI</span>
-            <span>FastAPI</span>
-            <span>React</span>
-            <span>PostgreSQL</span>
-          </div>
-          <div class="card-actions">
-            <a href="#" class="card-action-btn primary"><i data-lucide="external-link"></i> Live Demo</a>
-          </div>
-        </article>
-
-        <!-- 04 — PROJECT SENTINEL (PRD SECTION 14) -->
-        <article class="project-card-amber" data-categories="cv,ai" data-project="p4" onclick="openProjectModal('p4')">
-          <div class="card-top-row">
-            <div class="card-badge">04 // SENTINEL</div>
-            <div class="card-category"><i data-lucide="navigation"></i> Computer Vision & AI</div>
-          </div>
-          <h3>PROJECT SENTINEL</h3>
-          <div class="card-subtitle">Autonomous AI Surveillance Drone</div>
-          <div class="hud-telemetry-box">
-            <span>TELEMETRY</span>
-            <span style="color: var(--amber);">GPS: LOCKED | VISION: ACTIVE | OBJECTS: 03</span>
-          </div>
-          <ul class="card-features">
-            <li>Autonomous drone navigation and mission control visualization system</li>
-            <li>Real-time aerial object tracking and automated route optimization</li>
-            <li>Low-latency telemetry streaming over high-speed communication channels</li>
-          </ul>
-          <div class="card-tags">
-            <span>AI</span>
-            <span>Computer Vision</span>
-            <span>YOLO</span>
-            <span>Robotics</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
-
-        <!-- 05 — PERSONAL LLM -->
-        <article class="project-card-amber" data-categories="ai" data-project="p5" onclick="openProjectModal('p5')">
-          <div class="card-top-row">
-            <div class="card-badge">05 // PERSONAL LLM</div>
-            <div class="card-category"><i data-lucide="server"></i> AI & LLMs</div>
-          </div>
-          <h3>PERSONAL LLM</h3>
-          <div class="card-subtitle">On-Premise Local AI System</div>
-          <ul class="card-features">
-            <li>On-premise deployment of large-scale language models (LLaMA/Qwen) via high-performance Linux infrastructure</li>
-            <li>Privacy-first AI environment ensuring zero-data-leakage through localized semantic processing</li>
-            <li>Modular LLM orchestration layer for advanced model tuning and bespoke system prompt engineering</li>
-          </ul>
-          <div class="card-tags">
-            <span>LLM</span>
-            <span>Ollama</span>
-            <span>Python</span>
-            <span>Linux</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
-
-        <!-- 06 — JKKM MESS ERP -->
-        <article class="project-card-amber" data-categories="fullstack,health" data-project="p6" onclick="openProjectModal('p6')">
-          <div class="card-top-row">
-            <div class="card-badge">06 // MESS ERP</div>
-            <div class="card-category"><i data-lucide="database"></i> Full-Stack & Systems</div>
-          </div>
-          <h3>JKKM MESS ERP</h3>
-          <div class="card-subtitle">AI-Powered ERP</div>
-          <ul class="card-features">
-            <li>Smart ERP platform managing daily student attendance, meal consumption, and inventory forecasting</li>
-            <li>Predictive consumption model reducing food wastage and optimizing mess operations</li>
-            <li>Real-time administrative control panel with automated report generation</li>
-          </ul>
-          <div class="card-tags">
-            <span>Next.js</span>
-            <span>FastAPI</span>
-            <span>PostgreSQL</span>
-            <span>AI</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
-
-        <!-- 07 — AIR CANVA -->
-        <article class="project-card-amber" data-categories="cv,fullstack" data-project="p7" onclick="openProjectModal('p7')">
-          <div class="card-top-row">
-            <div class="card-badge">07 // AIR CANVA</div>
-            <div class="card-category"><i data-lucide="paintbrush"></i> Computer Vision</div>
-          </div>
-          <h3>AIR CANVA</h3>
-          <div class="card-subtitle">Zero-Touch Spatial Canvas</div>
-          <ul class="card-features">
-            <li>Immersive zero-touch interface utilizing Computer Vision and MediaPipe for spatial creativity</li>
-            <li>Real-time finger tracking and gesture recognition with low-latency rendering</li>
-            <li>Innovative digital canvas experience driven by AI-powered human-computer interaction</li>
-          </ul>
-          <div class="card-tags">
-            <span>JavaScript</span>
-            <span>MediaPipe</span>
-            <span>Canvas API</span>
-          </div>
-          <div class="card-actions">
-            <a href="#" class="card-action-btn primary"><i data-lucide="external-link"></i> Live Demo</a>
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
-
-        <!-- 08 — THEFT DETECTION SYSTEM -->
-        <article class="project-card-amber" data-categories="cv" data-project="p8" onclick="openProjectModal('p8')">
-          <div class="card-top-row">
-            <div class="card-badge">08 // THEFT CV</div>
-            <div class="card-category"><i data-lucide="shield-alert"></i> Computer Vision</div>
-          </div>
-          <h3>THEFT DETECTION SYSTEM</h3>
-          <div class="card-subtitle">Real-Time Threat Monitor</div>
-          <ul class="card-features">
-            <li>Real-time suspicious activity monitoring and automated threat detection</li>
-            <li>Intelligent video stream analysis utilizing custom-trained CV models</li>
-            <li>Automated security alerting system for critical perimeter monitoring</li>
-          </ul>
-          <div class="card-tags">
-            <span>Python</span>
-            <span>OpenCV</span>
-            <span>TensorFlow</span>
-          </div>
-          <div class="card-actions">
-            <a href="#" class="card-action-btn primary"><i data-lucide="external-link"></i> Live Demo</a>
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
-
-        <!-- 09 — LUCID OCR -->
-        <article class="project-card-amber" data-categories="ai,cv" data-project="p9" onclick="openProjectModal('p9')">
-          <div class="card-top-row">
-            <div class="card-badge">09 // LUCID OCR</div>
-            <div class="card-category"><i data-lucide="scan-text"></i> AI & Computer Vision</div>
-          </div>
-          <h3>LUCID OCR</h3>
-          <div class="card-subtitle">AI OCR & Document Processing</div>
-          <ul class="card-features">
-            <li>High-accuracy AI OCR engine for instant multi-format text extraction</li>
-            <li>Proprietary NLP-enhanced post-processing for document sanitization</li>
-            <li>Lightweight, privacy-focused localized text recognition pipeline</li>
-          </ul>
-          <div class="card-tags">
-            <span>Python</span>
-            <span>Tesseract</span>
-            <span>OpenCV</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
-
-        <!-- 10 — AI HUMANIZER -->
-        <article class="project-card-amber" data-categories="ai,health" data-project="p10" onclick="openProjectModal('p10')">
-          <div class="card-top-row">
-            <div class="card-badge">10 // HUMANIZER</div>
-            <div class="card-category"><i data-lucide="pen-tool"></i> AI & NLP</div>
-          </div>
-          <h3>AI HUMANIZER</h3>
-          <div class="card-subtitle">Linguistic Syntax Restructuring</div>
-          <ul class="card-features">
-            <li>Proprietary NLP engine utilizing advanced linguistic modeling to neutralize AI-generated syntax</li>
-            <li>Dynamic semantic restructuring to achieve human-like stylistic variation while maintaining core intent</li>
-            <li>Context-aware content transformation designed to optimize readability and bypass automated detection</li>
-          </ul>
-          <div class="card-tags">
-            <span>TypeScript</span>
-            <span>NLP</span>
-            <span>AI</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>
-          </div>
-        </article>
-
-        <!-- 11 — FITNESS TRACKER -->
-        <article class="project-card-amber" data-categories="fullstack,health" data-project="p11" onclick="openProjectModal('p11')">
-          <div class="card-top-row">
-            <div class="card-badge">11 // FITNESS</div>
-            <div class="card-category"><i data-lucide="heart-pulse"></i> Health & Full-Stack</div>
-          </div>
-          <h3>FITNESS TRACKER</h3>
-          <div class="card-subtitle">Biometric Health Analytics</div>
-          <ul class="card-features">
-            <li>Feature-rich health analytics platform for comprehensive biometric logging and BMI monitoring</li>
-            <li>Automated health milestone tracking with interactive time-series progress visualization</li>
-            <li>High-performance, zero-dependency architecture engineered for optimal load times and reliability</li>
-          </ul>
-          <div class="card-tags">
-            <span>HTML5</span>
-            <span>CSS3</span>
-            <span>JavaScript</span>
-          </div>
-          <div class="card-actions"></div>
-        </article>
+        <!-- ROW 6: SPACE & MODIFIERS & ARROWS -->
+        <div class="key-row row-6">
+          <div class="keykey key-wide-1-25" data-key="ControlLeft"><span class="legend">CTRL</span></div>
+          <div class="keykey key-wide-1-25" data-key="MetaLeft"><span class="legend">WIN</span></div>
+          <div class="keykey key-wide-1-25" data-key="AltLeft"><span class="legend">ALT</span></div>
+          <div class="keykey key-spacebar" data-key="Space"><span class="legend">SPACEBAR</span></div>
+          <div class="keykey key-wide-1-25" data-key="AltRight"><span class="legend">ALT</span></div>
+          <div class="keykey key-wide-1-25 accent-cyan" data-key="Fn"><span class="legend">FN</span></div>
+          <div class="keykey key-wide-1-25" data-key="ControlRight"><span class="legend">CTRL</span></div>
+          <div class="keykey key-arrow" data-key="ArrowLeft"><span class="legend">←</span></div>
+          <div class="keykey key-arrow" data-key="ArrowUp"><span class="legend">↑</span></div>
+          <div class="keykey key-arrow" data-key="ArrowDown"><span class="legend">↓</span></div>
+          <div class="keykey key-arrow" data-key="ArrowRight"><span class="legend">→</span></div>
+        </div>
 
       </div>
-    </section>
-
-    <!-- 04 / AI SYSTEMS & AGENTIC AI (PRD SECTION 11 & 12) -->
-    <section id="ai-systems" class="ai-systems-section">
-      <div class="section-tag">03 / AI SYSTEMS</div>
-      <h2 class="section-title">HOW I THINK. HOW I BUILD.</h2>
-      <p class="section-subtitle">FROM PROMPTS TO SYSTEMS — Autonomous execution loops that perceive, reason, plan, and act.</p>
-
-      <div class="agentic-flow-grid">
-        <div class="flow-step-card">
-          <div class="flow-step-num">01 / INPUT</div>
-          <div class="flow-step-title">PERCEIVE</div>
-          <div class="flow-step-desc">Extract multimodal signals & semantic query context.</div>
-        </div>
-        <div class="flow-step-card">
-          <div class="flow-step-num">02 / CORE</div>
-          <div class="flow-step-title">REASON</div>
-          <div class="flow-step-desc">Evaluate goal criteria using foundational LLM reasoning.</div>
-        </div>
-        <div class="flow-step-card">
-          <div class="flow-step-num">03 / STRATEGY</div>
-          <div class="flow-step-title">PLAN</div>
-          <div class="flow-step-desc">Decompose complex tasks into structured sub-goal DAGs.</div>
-        </div>
-        <div class="flow-step-card">
-          <div class="flow-step-num">04 / EXECUTION</div>
-          <div class="flow-step-title">USE TOOLS</div>
-          <div class="flow-step-desc">Invoke APIs, Vector DBs, & localized code execution.</div>
-        </div>
-        <div class="flow-step-card">
-          <div class="flow-step-num">05 / ACTION</div>
-          <div class="flow-step-title">ACT</div>
-          <div class="flow-step-desc">Execute system state updates & API side-effects.</div>
-        </div>
-        <div class="flow-step-card">
-          <div class="flow-step-num">06 / MEMORY</div>
-          <div class="flow-step-title">REFLECT</div>
-          <div class="flow-step-desc">Evaluate execution feedback & persist cross-session memory.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 05 / TECH STACK SECTION (PRD SECTION 13) -->
-    <section id="stack" class="stack-section">
-      <div class="section-tag">04 / STACK</div>
-      <h2 class="section-title">WHAT I BUILD WITH</h2>
-      <p class="section-subtitle">Hover over any technology to highlight related engineering projects.</p>
-
-      <div class="stack-grid">
-        <div class="stack-pill" data-tech="Python"><i class="devicon-python-plain colored"></i> Python</div>
-        <div class="stack-pill" data-tech="TypeScript"><i class="devicon-typescript-plain colored"></i> TypeScript</div>
-        <div class="stack-pill" data-tech="JavaScript"><i class="devicon-javascript-plain colored"></i> JavaScript</div>
-        <div class="stack-pill" data-tech="React"><i class="devicon-react-original colored"></i> React.js</div>
-        <div class="stack-pill" data-tech="Next.js"><i class="devicon-nextjs-plain"></i> Next.js</div>
-        <div class="stack-pill" data-tech="FastAPI">FastAPI</div>
-        <div class="stack-pill" data-tech="ChromaDB">ChromaDB / Vector DB</div>
-        <div class="stack-pill" data-tech="LangChain">LangChain</div>
-        <div class="stack-pill" data-tech="OpenCV">OpenCV</div>
-        <div class="stack-pill" data-tech="MediaPipe">MediaPipe</div>
-        <div class="stack-pill" data-tech="Ollama">Ollama / Local LLMs</div>
-        <div class="stack-pill" data-tech="PostgreSQL"><i class="devicon-postgresql-plain colored"></i> PostgreSQL</div>
-        <div class="stack-pill" data-tech="Docker"><i class="devicon-docker-plain colored"></i> Docker</div>
-        <div class="stack-pill" data-tech="Three.js">Three.js / WebGL</div>
-      </div>
-    </section>
-
-    <!-- 06 / JOURNEY TIMELINE (PRD SECTION 16) -->
-    <section id="journey" class="journey-section">
-      <div class="section-tag">05 / JOURNEY</div>
-      <h2 class="section-title">BUILDING FORWARD</h2>
-      <p class="section-subtitle">A chronological timeline of technical evolution and specialization.</p>
-
-      <div class="timeline-track">
-        <div class="timeline-card">
-          <div class="timeline-year">2023</div>
-          <div class="timeline-title">DEVELOPMENT FOUNDATIONS</div>
-          <div class="timeline-desc">Mastered core algorithms, web architecture, data structures, and statistical ML principles during B.Tech at JKKMCT.</div>
-        </div>
-        <div class="timeline-card">
-          <div class="timeline-year">2024</div>
-          <div class="timeline-title">WEB + AI INTERACTION</div>
-          <div class="timeline-desc">Engineered spatial canvas systems (Air Canva) and real-time threat detection monitors using OpenCV and MediaPipe.</div>
-        </div>
-        <div class="timeline-card">
-          <div class="timeline-year">2025</div>
-          <div class="timeline-title">LLMs + RAG PIPELINES</div>
-          <div class="timeline-desc">Built persistent memory RAG agents (Memora), healthcare compliance audit engines (HealthGuard AI), and local Ollama instances.</div>
-        </div>
-        <div class="timeline-card">
-          <div class="timeline-year">2026+</div>
-          <div class="timeline-title">AGENTIC AI & CV SYSTEMS</div>
-          <div class="timeline-desc">Focusing on multi-agent execution frameworks, 3D conversational avatars (AURORA), and autonomous drone systems (Sentinel).</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 07 / CONTACT SECTION (PRD SECTION 27 & 28) -->
-    <section id="contact" class="contact-section">
-      <div class="contact-card-gold">
-        <div class="section-tag">06 / CONTACT</div>
-        <h2>LET'S BUILD SOMETHING INTELLIGENT</h2>
-        <p>Have an idea, project, or problem worth solving? Available for full-time AI Engineering roles, LLM/Computer Vision projects, and technical collaborations.</p>
-
-        <div class="contact-links-grid">
-          <a href="mailto:manjunath.work.ai@gmail.com" class="contact-badge-btn">
-            <i data-lucide="mail"></i>
-            <span>EMAIL ↗</span>
-          </a>
-          <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="contact-badge-btn">
-            <i class="devicon-github-original"></i>
-            <span>GITHUB ↗</span>
-          </a>
-          <a href="https://www.linkedin.com/in/manjunath-manjunath-248594352" target="_blank" rel="noopener" class="contact-badge-btn">
-            <i class="devicon-linkedin-plain"></i>
-            <span>LINKEDIN ↗</span>
-          </a>
-          <a href="https://www.instagram.com/mjx_1303" target="_blank" rel="noopener" class="contact-badge-btn">
-            <i data-lucide="instagram"></i>
-            <span>INSTAGRAM ↗</span>
-          </a>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
-
-  <!-- TERMINAL CLI OVERLAY (PRD SECTION 18-21) -->
-  <div id="terminalOverlay" class="terminal-overlay">
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <div class="terminal-title" id="termModeTitle">MJ_MANJUNATH_CLI_v3.0 [CMD MODE]</div>
-        <div class="terminal-hint">Press ESC to close</div>
-      </div>
-      <div class="terminal-body" id="terminalOutput">
-        <div class="term-line welcome">Manjunath's Tactile Keyboard Terminal Console.</div>
-        <div class="term-line">Type <span class="cmd-highlight">help</span> to view available commands. Try <span class="cmd-highlight">neofetch</span> or <span class="cmd-highlight">sudo hire manjunath</span>.</div>
-      </div>
-      <div class="terminal-input-row">
-        <span class="prompt" id="termPrompt">C:\Manjunath\Portfolio&gt;</span>
-        <input type="text" id="terminalInput" class="term-input" placeholder="Type command (e.g. help, neofetch, mode linux, projects)...">
-      </div>
-    </div>
-  </div>
-
-  <!-- PROJECT INSPECTION MODAL -->
-  <div id="projectModal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeProjectModal()">&times;</button>
-      <div id="modalDetails"></div>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <p>MANJUNATH — AI ENGINEER · AGENTIC CODER · CREATIVE DEVELOPER &nbsp;|&nbsp; STATUS: ONLINE ● &nbsp;|&nbsp; © 2026</p>
-  </footer>
 
   <script src="app.js"></script>
 </body>

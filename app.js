@@ -1,6 +1,7 @@
 /* ==========================================================================
-   MANJUNATH — FINAL PRD CREATIVE PORTFOLIO ENGINE
-   Custom Amber Cursor, Terminal Morph, Keyboard Dock, CMD Easter Eggs, 3D WebGL
+   MANJUNATH — DEDICATED 75% RGB MECHANICAL KEYBOARD & MONITOR ENGINE
+   Desktop Display Screen Switcher, WebAudio Mechanical Switches,
+   RGB Lighting Modes, OLED Panel Telemetry & Real-Time Keyboard Input Pipeline
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,75 +9,103 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) window.lucide.createIcons();
 
   const state = {
+    rgbEnabled: true,
+    rgbMode: 'rainbow',
     audioEnabled: true,
     soundProfile: 'thock',
-    introMorphed: false,
-    cmdMode: 'cmd', // 'cmd' or 'linux'
-    commandHistory: [],
-    historyIndex: -1
+    keyPressCount: 0,
+    typedText: '',
+    activeView: 'about'
   };
 
-  // CUSTOM AMBER CURSOR ENGINE (PRD SECTION 23)
+  // DOM Elements
+  const body = document.body;
+  const oledKey = document.getElementById('oledKey');
+  const oledCode = document.getElementById('oledCode');
+  const oledRgb = document.getElementById('oledRgb');
+  const oledCount = document.getElementById('oledCount');
+  const typedDisplay = document.getElementById('typedTextDisplay');
+  const rgbSelect = document.getElementById('rgbModeSelect');
+  const rgbToggleBtn = document.getElementById('rgbToggleBtn');
+  const soundSelect = document.getElementById('soundProfileSelect');
+  const audioToggleBtn = document.getElementById('audioToggleBtn');
+  const audioIcon = document.getElementById('audioIcon');
+  const clearBtn = document.getElementById('clearTextBtn');
+  const screenClock = document.getElementById('screenClock');
+
+  // Monitor Views & Tabs
+  const navTabs = document.querySelectorAll('.nav-tab');
+  const views = {
+    about: document.getElementById('viewAbout'),
+    work: document.getElementById('viewWork'),
+    stack: document.getElementById('viewStack'),
+    contact: document.getElementById('viewContact'),
+    terminal: document.getElementById('viewTerminal')
+  };
+
+  // Initialize Modules
   initCustomCursor();
-
-  // THREE.JS PARTICLES BACKGROUND
   initParticleBackground();
+  initClock();
+  initMonitorTabs();
+  initRGBControls();
+  initAudioEngine();
+  initKeyboardListeners();
+  initMonitorTerminal();
 
-  // INTRO TERMINAL MORPH ENGINE
-  initIntroTerminal();
+  // =========================================================================
+  // 1. MONITOR VIEW SWITCHER LOGIC
+  // =========================================================================
+  function switchMonitorView(viewName) {
+    if (!views[viewName]) return;
+    state.activeView = viewName;
 
-  // AUDIO SYNTHESIZER
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  let audioCtx = null;
+    // Update active tab button
+    navTabs.forEach((tab) => {
+      if (tab.getAttribute('data-view') === viewName) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
 
-  function getAudioContext() {
-    if (!audioCtx) audioCtx = new AudioCtx();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    return audioCtx;
+    // Update active view panel
+    Object.keys(views).forEach((vKey) => {
+      if (views[vKey]) {
+        if (vKey === viewName) {
+          views[vKey].classList.add('active');
+        } else {
+          views[vKey].classList.remove('active');
+        }
+      }
+    });
+
+    // Update OLED status
+    if (oledRgb) oledRgb.textContent = viewName.toUpperCase();
   }
 
-  function playMechanicalKeySound() {
-    if (!state.audioEnabled) return;
-    try {
-      const ctx = getAudioContext();
-      const now = ctx.currentTime;
+  function initMonitorTabs() {
+    navTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const viewName = tab.getAttribute('data-view');
+        switchMonitorView(viewName);
+        playMechanicalKeySound();
+      });
+    });
+  }
 
-      if (state.soundProfile === 'thock') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(130, now);
-        osc.frequency.exponentialRampToValueAtTime(32, now + 0.09);
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.11);
-      } else if (state.soundProfile === 'clicky') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(750, now);
-        osc.frequency.exponentialRampToValueAtTime(180, now + 0.05);
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.06);
-      } else {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(85, now);
-        osc.frequency.exponentialRampToValueAtTime(35, now + 0.07);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.08);
-      }
-    } catch (e) {}
+  function initClock() {
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0];
+      if (screenClock) screenClock.textContent = timeStr;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
   }
 
   // =========================================================================
-  // CUSTOM CURSOR (PRD SECTION 23)
+  // 2. CUSTOM CURSOR ENGINE
   // =========================================================================
   function initCustomCursor() {
     const dot = document.getElementById('cursorDot');
@@ -102,8 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     renderRing();
 
-    // Hover expand targets
-    const hoverables = 'a, button, .dock-key, .project-card-amber, .stack-pill, .filter-tab, .flow-step-card, input';
+    const hoverables = 'button, select, .keykey, a, input, .nav-tab, .work-card, .stack-box';
     document.addEventListener('mouseover', (e) => {
       if (e.target.closest(hoverables)) {
         document.body.classList.add('hovered-link');
@@ -117,565 +145,57 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // INTRO TERMINAL MORPH LOGIC (PRD SECTION 3)
-  // =========================================================================
-  function initIntroTerminal() {
-    const introTerminal = document.getElementById('introTerminal');
-    const introInput = document.getElementById('introTerminalInput');
-    const enterBtn = document.getElementById('enterWorkspaceBtn');
-
-    function launchWorkspace() {
-      if (state.introMorphed) return;
-      state.introMorphed = true;
-      introTerminal.classList.add('morphed');
-      getAudioContext();
-      playMechanicalKeySound();
-    }
-
-    if (enterBtn) enterBtn.addEventListener('click', launchWorkspace);
-
-    if (introInput) {
-      introInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          launchWorkspace();
-        }
-      });
-    }
-
-    window.addEventListener('keydown', (e) => {
-      if (!state.introMorphed && e.key === 'Escape') {
-        launchWorkspace();
-      }
-    });
-  }
-
-  // =========================================================================
-  // KEYBOARD DOCK & GLOBAL HOTKEYS (PRD SECTION 7)
-  // =========================================================================
-  const dockKeys = document.querySelectorAll('.dock-key');
-  const dockMap = {};
-
-  dockKeys.forEach(keyEl => {
-    const code = keyEl.getAttribute('data-key');
-    if (code) dockMap[code] = keyEl;
-  });
-
-  window.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      toggleTerminal();
-      return;
-    }
-
-    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-      if (e.code === 'Escape') {
-        document.activeElement.blur();
-        closeTerminal();
-        closeProjectModal();
-      }
-      return;
-    }
-
-    // Trigger tactile press animation
-    const dockEl = dockMap[e.code];
-    if (dockEl) {
-      dockEl.classList.add('pressed');
-      playMechanicalKeySound();
-      setTimeout(() => dockEl.classList.remove('pressed'), 140);
-    }
-
-    // Hotkey Action Dispatch
-    switch (e.code) {
-      case 'KeyA': scrollToSection('about'); break;
-      case 'KeyW': scrollToSection('projects'); break;
-      case 'KeyI': scrollToSection('ai-systems'); break;
-      case 'KeyS': scrollToSection('stack'); break;
-      case 'KeyJ': scrollToSection('journey'); break;
-      case 'KeyC': scrollToSection('contact'); break;
-      case 'KeyT': toggleTerminal(); break;
-      case 'Digit1': openProjectModal('p1'); break;
-      case 'Digit2': openProjectModal('p2'); break;
-      case 'Digit3': openProjectModal('p3'); break;
-      case 'Digit4': openProjectModal('p4'); break;
-      case 'Digit5': openProjectModal('p5'); break;
-      case 'Digit6': openProjectModal('p6'); break;
-      case 'Escape':
-        closeTerminal();
-        closeProjectModal();
-        break;
-      default: break;
-    }
-  });
-
-  window.scrollToSection = function(id) {
-    const section = document.getElementById(id);
-    if (section) section.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  // =========================================================================
-  // AUDIO CONTROLS
-  // =========================================================================
-  const audioToggleBtn = document.getElementById('audioToggleBtn');
-  const audioIcon = document.getElementById('audioIcon');
-  const soundProfileSelect = document.getElementById('soundProfileSelect');
-
-  if (audioToggleBtn) {
-    audioToggleBtn.addEventListener('click', () => {
-      state.audioEnabled = !state.audioEnabled;
-      if (state.audioEnabled) {
-        audioToggleBtn.classList.add('active');
-        audioIcon.setAttribute('data-lucide', 'volume-2');
-      } else {
-        audioToggleBtn.classList.remove('active');
-        audioIcon.setAttribute('data-lucide', 'volume-x');
-      }
-      if (window.lucide) window.lucide.createIcons();
-    });
-  }
-
-  if (soundProfileSelect) {
-    soundProfileSelect.addEventListener('change', (e) => {
-      state.soundProfile = e.target.value;
-      playMechanicalKeySound();
-    });
-  }
-
-  // =========================================================================
-  // COMPREHENSIVE 11-PROJECT DATABASE
-  // =========================================================================
-  const projectData = {
-    p1: {
-      title: 'AURORA',
-      category: 'AI & LLMs',
-      subtitle: '3D AI Voice Assistant · Avatar UX',
-      tech: ['AI', 'LLM', 'VOICE', '3D'],
-      features: [
-        'Next-generation 3D conversational agent leveraging LLMs and real-time speech processing',
-        'Advanced NLP engine for natural, context-aware human-machine interaction',
-        'Immersive avatar-based interface with high-fidelity facial synchronization'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p2: {
-      title: 'MEMORA',
-      category: 'AI & LLMs',
-      subtitle: 'Persistent RAG Memory Agent',
-      tech: ['RAG', 'ChromaDB', 'LLM', 'Python'],
-      features: [
-        'Intelligent RAG-based agent with persistent semantic memory across sessions',
-        'Advanced retrieval pipeline utilizing vector embeddings and ChromaDB',
-        'Modular agent architecture designed for hyper-personalized user experiences'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p3: {
-      title: 'HEALTHGUARD AI',
-      category: 'Health & Full-Stack',
-      subtitle: 'NABH Compliance Intelligence',
-      tech: ['AI', 'FastAPI', 'React', 'PostgreSQL'],
-      features: [
-        'Healthcare audit automation utilizing predictive analytics for NABH pre-entry assessment',
-        'Intelligent gap analysis engine with automated compliance scoring and reporting',
-        'Comprehensive 250+ point accreditation dashboard for medical facilities'
-      ],
-      liveDemo: '#',
-      sourceCode: null
-    },
-    p4: {
-      title: 'PROJECT SENTINEL',
-      category: 'Computer Vision & AI',
-      subtitle: 'Autonomous AI Surveillance Drone',
-      tech: ['AI', 'Computer Vision', 'YOLO', 'Robotics'],
-      features: [
-        'Autonomous drone navigation and mission control visualization system',
-        'Real-time aerial object tracking and automated route optimization',
-        'Low-latency telemetry streaming over high-speed communication channels'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p5: {
-      title: 'PERSONAL LLM',
-      category: 'AI & LLMs',
-      subtitle: 'On-Premise Privacy LLM Instance',
-      tech: ['LLM', 'Ollama', 'Python', 'Linux'],
-      features: [
-        'On-premise deployment of large-scale language models (LLaMA/Qwen) via high-performance Linux infrastructure',
-        'Privacy-first AI environment ensuring zero-data-leakage through localized semantic processing',
-        'Modular LLM orchestration layer for advanced model tuning and bespoke system prompt engineering'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p6: {
-      title: 'JKKM MESS ERP',
-      category: 'Full-Stack & Systems',
-      subtitle: 'AI-Powered Mess Management ERP',
-      tech: ['Next.js', 'FastAPI', 'PostgreSQL', 'AI'],
-      features: [
-        'Smart ERP platform managing daily student attendance, meal consumption, and inventory forecasting',
-        'Predictive consumption model reducing food wastage and optimizing mess operations',
-        'Real-time administrative control panel with automated report generation'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p7: {
-      title: 'AIR CANVA',
-      category: 'Computer Vision',
-      subtitle: 'Zero-Touch Spatial Canvas',
-      tech: ['JavaScript', 'MediaPipe', 'Canvas API'],
-      features: [
-        'Immersive zero-touch interface utilizing Computer Vision and MediaPipe for spatial creativity',
-        'Real-time finger tracking and gesture recognition with low-latency rendering',
-        'Innovative digital canvas experience driven by AI-powered human-computer interaction'
-      ],
-      liveDemo: '#',
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p8: {
-      title: 'THEFT DETECTION SYSTEM',
-      category: 'Computer Vision',
-      subtitle: 'Real-Time Threat Monitor',
-      tech: ['Python', 'OpenCV', 'TensorFlow'],
-      features: [
-        'Real-time suspicious activity monitoring and automated threat detection',
-        'Intelligent video stream analysis utilizing custom-trained CV models',
-        'Automated security alerting system for critical perimeter monitoring'
-      ],
-      liveDemo: '#',
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p9: {
-      title: 'LUCID OCR',
-      category: 'AI & Computer Vision',
-      subtitle: 'High-Accuracy AI OCR & NLP',
-      tech: ['Python', 'Tesseract', 'OpenCV'],
-      features: [
-        'High-accuracy AI OCR engine for instant multi-format text extraction',
-        'Proprietary NLP-enhanced post-processing for document sanitization',
-        'Lightweight, privacy-focused localized text recognition pipeline'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p10: {
-      title: 'AI HUMANIZER',
-      category: 'AI & NLP',
-      subtitle: 'Linguistic Syntax Restructuring',
-      tech: ['TypeScript', 'NLP', 'AI'],
-      features: [
-        'Proprietary NLP engine utilizing advanced linguistic modeling to neutralize AI-generated syntax',
-        'Dynamic semantic restructuring to achieve human-like stylistic variation while maintaining core intent',
-        'Context-aware content transformation designed to optimize readability and bypass automated detection'
-      ],
-      liveDemo: null,
-      sourceCode: 'https://github.com/Manju1303'
-    },
-    p11: {
-      title: 'FITNESS TRACKER',
-      category: 'Health & Full-Stack',
-      subtitle: 'Biometric Health Analytics',
-      tech: ['HTML5', 'CSS3', 'JavaScript'],
-      features: [
-        'Feature-rich health analytics platform for comprehensive biometric logging and BMI monitoring',
-        'Automated health milestone tracking with interactive time-series progress visualization',
-        'High-performance, zero-dependency architecture engineered for optimal load times and reliability'
-      ],
-      liveDemo: null,
-      sourceCode: null
-    }
-  };
-
-  // =========================================================================
-  // PROJECT MODAL
-  // =========================================================================
-  window.openProjectModal = function(id) {
-    const modal = document.getElementById('projectModal');
-    const details = document.getElementById('modalDetails');
-    const data = projectData[id];
-    if (!data) return;
-
-    let actionsHtml = '';
-    if (data.liveDemo) {
-      actionsHtml += `<a href="${data.liveDemo}" target="_blank" rel="noopener" class="card-action-btn primary"><i data-lucide="external-link"></i> Live Demo</a>`;
-    }
-    if (data.sourceCode) {
-      actionsHtml += `<a href="${data.sourceCode}" target="_blank" rel="noopener" class="card-action-btn"><i data-lucide="github"></i> Source Code</a>`;
-    }
-    if (!data.liveDemo && !data.sourceCode) {
-      actionsHtml = '<span class="card-action-btn coming-soon"><i data-lucide="clock"></i> Coming Soon</span>';
-    }
-
-    details.innerHTML = `
-      <div class="modal-category">${data.category}</div>
-      <h2 class="modal-title">${data.title}</h2>
-      <div class="modal-subtitle">${data.subtitle}</div>
-      <ul class="modal-features">
-        ${data.features.map(f => `<li>${f}</li>`).join('')}
-      </ul>
-      <div class="modal-tech">
-        ${data.tech.map(t => `<span>${t}</span>`).join('')}
-      </div>
-      <div class="modal-actions">${actionsHtml}</div>
-    `;
-
-    if (window.lucide) window.lucide.createIcons();
-    modal.classList.add('active');
-    playMechanicalKeySound();
-  };
-
-  window.closeProjectModal = function() {
-    const modal = document.getElementById('projectModal');
-    if (modal) modal.classList.remove('active');
-  };
-
-  // =========================================================================
-  // CATEGORY FILTER
-  // =========================================================================
-  const filterTabs = document.querySelectorAll('.filter-tab');
-  const projectCards = document.querySelectorAll('.project-card-amber');
-
-  filterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      filterTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      const filter = tab.getAttribute('data-filter');
-
-      projectCards.forEach(card => {
-        if (filter === 'all') {
-          card.classList.remove('hidden');
-        } else {
-          const categories = card.getAttribute('data-categories') || '';
-          if (categories.split(',').includes(filter)) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
-        }
-      });
-
-      playMechanicalKeySound();
-    });
-  });
-
-  // =========================================================================
-  // TECH STACK HIGHLIGHT ENGINE
-  // =========================================================================
-  const stackPills = document.querySelectorAll('.stack-pill');
-  stackPills.forEach(pill => {
-    pill.addEventListener('mouseenter', () => {
-      const targetTech = pill.getAttribute('data-tech').toLowerCase();
-
-      projectCards.forEach(card => {
-        const cardTags = Array.from(card.querySelectorAll('.card-tags span')).map(s => s.textContent.toLowerCase());
-        if (cardTags.some(tag => tag.includes(targetTech))) {
-          card.classList.add('highlighted');
-        }
-      });
-    });
-
-    pill.addEventListener('mouseleave', () => {
-      projectCards.forEach(card => card.classList.remove('highlighted'));
-    });
-  });
-
-  // =========================================================================
-  // TERMINAL CLI PARSER & EASTER EGGS (PRD SECTION 18-21)
-  // =========================================================================
-  const cmdPaletteBtn = document.getElementById('cmdPaletteBtn');
-  const terminalOverlay = document.getElementById('terminalOverlay');
-  const terminalInput = document.getElementById('terminalInput');
-  const terminalOutput = document.getElementById('terminalOutput');
-  const termPrompt = document.getElementById('termPrompt');
-  const termModeTitle = document.getElementById('termModeTitle');
-
-  if (cmdPaletteBtn) cmdPaletteBtn.addEventListener('click', toggleTerminal);
-
-  window.toggleTerminal = function() {
-    if (terminalOverlay.classList.contains('active')) closeTerminal();
-    else {
-      terminalOverlay.classList.add('active');
-      terminalInput.focus();
-      playMechanicalKeySound();
-    }
-  };
-
-  window.closeTerminal = function() {
-    if (terminalOverlay) terminalOverlay.classList.remove('active');
-  };
-
-  if (terminalInput) {
-    terminalInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const cmd = terminalInput.value.trim();
-        if (cmd) {
-          state.commandHistory.push(cmd);
-          state.historyIndex = state.commandHistory.length;
-          executeCommand(cmd);
-          terminalInput.value = '';
-        }
-      } else if (e.key === 'ArrowUp') {
-        if (state.historyIndex > 0) {
-          state.historyIndex--;
-          terminalInput.value = state.commandHistory[state.historyIndex] || '';
-        }
-      } else if (e.key === 'ArrowDown') {
-        if (state.historyIndex < state.commandHistory.length - 1) {
-          state.historyIndex++;
-          terminalInput.value = state.commandHistory[state.historyIndex] || '';
-        } else {
-          state.historyIndex = state.commandHistory.length;
-          terminalInput.value = '';
-        }
-      } else if (e.key === 'Tab') {
-        e.preventDefault();
-        handleTabAutocomplete(terminalInput);
-      }
-    });
-  }
-
-  const availableCmds = ['help', 'about', 'whoami', 'projects', 'ai', 'agents', 'llm', 'rag', 'skills', 'stack', 'journey', 'github', 'linkedin', 'contact', 'neofetch', 'sudo hire manjunath', 'matrix', 'hack', 'mode linux', 'mode cmd', 'clear', 'cls', 'exit'];
-
-  function handleTabAutocomplete(input) {
-    const val = input.value.toLowerCase().trim();
-    if (!val) return;
-    const match = availableCmds.find(c => c.startsWith(val));
-    if (match) {
-      input.value = match;
-    }
-  }
-
-  function executeCommand(cmd) {
-    const currentPrompt = state.cmdMode === 'cmd' ? 'C:\\Manjunath\\Portfolio>' : 'mj@manjunath:~$';
-    appendTermLine(`${currentPrompt} ${cmd}`, 'cmd-user');
-    const cleanCmd = cmd.toLowerCase().trim();
-
-    if (cleanCmd === 'help') {
-      appendTermLine('Supported Commands: help, about, whoami, projects, ai, stack, journey, github, contact, neofetch, sudo hire manjunath, matrix, hack, mode linux, mode cmd, clear, exit', 'cmd-info');
-    } else if (cleanCmd === 'neofetch') {
-      appendTermLine('MANJUNATH@PORTFOLIO', 'cmd-highlight');
-      appendTermLine('-------------------', 'cmd-highlight');
-      appendTermLine('OS: Manjunath Portfolio OS v3.0 (x86_64)', '');
-      appendTermLine('ROLE: AI Engineer & Agentic Coder', 'cmd-info');
-      appendTermLine('FOCUS: LLM RAG, Multi-Agent Systems, Computer Vision', '');
-      appendTermLine('PROJECTS: 11 (AURORA, MEMORA, HEALTHGUARD AI, SENTINEL...)', '');
-      appendTermLine('STATUS: ONLINE ●', 'cmd-info');
-    } else if (cleanCmd === 'sudo hire manjunath') {
-      appendTermLine('Checking authorization...', 'cmd-info');
-      setTimeout(() => {
-        appendTermLine('100% ACCESS GRANTED. Good choice. 🚀', 'cmd-highlight');
-      }, 300);
-    } else if (cleanCmd === 'matrix') {
-      appendTermLine('Wake up, Neo... The Matrix has you. 🟢', 'cmd-info');
-    } else if (cleanCmd === 'hack') {
-      appendTermLine('Access denied. Nice try. 😄', 'cmd-warn');
-    } else if (cleanCmd === 'mode linux') {
-      state.cmdMode = 'linux';
-      termPrompt.textContent = 'mj@manjunath:~$';
-      termModeTitle.textContent = 'MJ_MANJUNATH_CLI_v3.0 [LINUX MODE]';
-      appendTermLine('Switched prompt mode to Linux (mj@manjunath:~$)', 'cmd-info');
-    } else if (cleanCmd === 'mode cmd') {
-      state.cmdMode = 'cmd';
-      termPrompt.textContent = 'C:\\Manjunath\\Portfolio>';
-      termModeTitle.textContent = 'MJ_MANJUNATH_CLI_v3.0 [CMD MODE]';
-      appendTermLine('Switched prompt mode to Windows CMD (C:\\Manjunath\\Portfolio>)', 'cmd-info');
-    } else if (cleanCmd === 'about' || cleanCmd === 'whoami') {
-      appendTermLine('Manjunath — AI Engineer & Data Science Professional (B.Tech JKKMCT).', 'cmd-highlight');
-      appendTermLine('"I DON\'T JUST USE AI. I BUILD SYSTEMS AROUND IT."', 'cmd-info');
-    } else if (cleanCmd === 'projects' || cleanCmd === 'work') {
-      scrollToSection('projects');
-      closeTerminal();
-    } else if (cleanCmd === 'ai' || cleanCmd === 'agents' || cleanCmd === 'llm' || cleanCmd === 'rag') {
-      scrollToSection('ai-systems');
-      closeTerminal();
-    } else if (cleanCmd === 'skills' || cleanCmd === 'stack') {
-      scrollToSection('stack');
-      closeTerminal();
-    } else if (cleanCmd === 'journey') {
-      scrollToSection('journey');
-      closeTerminal();
-    } else if (cleanCmd === 'contact' || cleanCmd === 'github' || cleanCmd === 'linkedin') {
-      scrollToSection('contact');
-      closeTerminal();
-    } else if (cleanCmd === 'clear' || cleanCmd === 'cls') {
-      terminalOutput.innerHTML = '';
-    } else if (cleanCmd === 'exit') {
-      closeTerminal();
-    } else {
-      appendTermLine(`Command '${cmd}' not recognized. Type 'help' for available commands.`, 'cmd-warn');
-    }
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-    playMechanicalKeySound();
-  }
-
-  function appendTermLine(text, className = '') {
-    const line = document.createElement('div');
-    line.className = `term-line ${className}`;
-    line.textContent = text;
-    terminalOutput.appendChild(line);
-  }
-
-  // =========================================================================
-  // THREE.JS PARTICLES BACKGROUND
+  // 3. THREE.JS PARTICLES BACKGROUND
   // =========================================================================
   function initParticleBackground() {
     const canvas = document.getElementById('bgCanvas');
-    if (!canvas || !window.THREE) return;
+    if (!canvas || typeof THREE === 'undefined') return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const particlesCount = 300;
-    const posArray = new Float32Array(particlesCount * 3);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 30;
 
-    for (let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 22;
+    const count = 180;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    const baseColor = new THREE.Color(0xd6a928);
+    const cyanColor = new THREE.Color(0x00f0ff);
+
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 60;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 40;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
+
+      const mixColor = Math.random() > 0.5 ? baseColor : cyanColor;
+      colors[i * 3] = mixColor.r;
+      colors[i * 3 + 1] = mixColor.g;
+      colors[i * 3 + 2] = mixColor.b;
     }
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.032,
-      color: 0xd6a928,
+      size: 0.25,
+      vertexColors: true,
       transparent: true,
-      opacity: 0.45
+      opacity: 0.6
     });
 
-    const particlesMesh = new THREE.Points(geometry, material);
-    scene.add(particlesMesh);
-
-    camera.position.z = 5;
-
-    let isVisible = true;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        isVisible = entry.isIntersecting;
-      });
-    }, { threshold: 0.05 });
-    observer.observe(canvas);
-
-    window.addEventListener('mousemove', (e) => {
-      const mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
-      const mouseY = (e.clientY / window.innerHeight - 0.5) * 0.4;
-      particlesMesh.rotation.x = mouseY;
-      particlesMesh.rotation.y = mouseX;
-    });
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
 
     function animate() {
       requestAnimationFrame(animate);
-      if (isVisible) {
-        particlesMesh.rotation.y += 0.0006;
-        renderer.render(scene, camera);
-      }
+      particles.rotation.y += 0.0008;
+      particles.rotation.x += 0.0004;
+      renderer.render(scene, camera);
     }
     animate();
 
@@ -683,6 +203,279 @@ document.addEventListener('DOMContentLoaded', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  }
+
+  // =========================================================================
+  // 4. WEBAUDIO MECHANICAL SWITCH SYNTHESIZER
+  // =========================================================================
+  let audioCtx = null;
+
+  function getAudioContext() {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playMechanicalKeySound() {
+    if (!state.audioEnabled) return;
+    try {
+      const ctx = getAudioContext();
+      const now = ctx.currentTime;
+
+      if (state.soundProfile === 'thock') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.09);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.11);
+      } else if (state.soundProfile === 'clicky') {
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'square';
+        osc1.frequency.setValueAtTime(800, now);
+        osc1.frequency.exponentialRampToValueAtTime(150, now + 0.04);
+        gain1.gain.setValueAtTime(0.2, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc1.connect(gain1); gain1.connect(ctx.destination);
+        osc1.start(now); osc1.stop(now + 0.05);
+      } else if (state.soundProfile === 'silent') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(85, now);
+        osc.frequency.exponentialRampToValueAtTime(35, now + 0.07);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.08);
+      } else if (state.soundProfile === 'creamy') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.08);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.1);
+      }
+    } catch (e) {}
+  }
+
+  // =========================================================================
+  // 5. RGB CONTROLS ENGINE
+  // =========================================================================
+  function initRGBControls() {
+    if (rgbSelect) {
+      rgbSelect.addEventListener('change', (e) => {
+        state.rgbMode = e.target.value;
+        body.className = body.className.replace(/rgb-mode-\w+/g, '');
+        body.classList.add(`rgb-mode-${state.rgbMode}`);
+      });
+    }
+
+    if (rgbToggleBtn) {
+      rgbToggleBtn.addEventListener('click', () => {
+        state.rgbEnabled = !state.rgbEnabled;
+        if (state.rgbEnabled) {
+          body.classList.remove('rgb-off');
+          rgbToggleBtn.classList.add('active');
+          rgbToggleBtn.querySelector('span').textContent = 'RGB ON';
+        } else {
+          body.classList.add('rgb-off');
+          rgbToggleBtn.classList.remove('active');
+          rgbToggleBtn.querySelector('span').textContent = 'RGB OFF';
+        }
+      });
+    }
+
+    if (soundSelect) {
+      soundSelect.addEventListener('change', (e) => {
+        state.soundProfile = e.target.value;
+        playMechanicalKeySound();
+      });
+    }
+
+    if (audioToggleBtn) {
+      audioToggleBtn.addEventListener('click', () => {
+        state.audioEnabled = !state.audioEnabled;
+        if (state.audioEnabled) {
+          audioToggleBtn.classList.add('active');
+          if (audioIcon) audioIcon.setAttribute('data-lucide', 'volume-2');
+        } else {
+          audioToggleBtn.classList.remove('active');
+          if (audioIcon) audioIcon.setAttribute('data-lucide', 'volume-x');
+        }
+        if (window.lucide) window.lucide.createIcons();
+      });
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        state.typedText = '';
+        if (typedDisplay) typedDisplay.textContent = '';
+      });
+    }
+  }
+
+  // =========================================================================
+  // 6. KEYBOARD LISTENERS & REAL-TIME INPUT ENGINE
+  // =========================================================================
+  function initKeyboardListeners() {
+    const keys = document.querySelectorAll('.keykey');
+    const keyMap = new Map();
+
+    keys.forEach((keyEl) => {
+      const dataKey = keyEl.getAttribute('data-key');
+      if (dataKey) {
+        keyMap.set(dataKey, keyEl);
+      }
+
+      // Mouse click on keycap
+      keyEl.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        triggerKeyAction(dataKey, keyEl);
+      });
+    });
+
+    // Physical keydown event
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+
+      const code = e.code;
+      const keyEl = keyMap.get(code);
+
+      if (keyEl) {
+        keyEl.classList.add('active');
+        triggerKeyAction(code, keyEl, e);
+      } else {
+        triggerKeyAction(e.key, null, e);
+      }
+    });
+
+    // Physical keyup event
+    window.addEventListener('keyup', (e) => {
+      const code = e.code;
+      const keyEl = keyMap.get(code);
+      if (keyEl) {
+        keyEl.classList.remove('active');
+      }
+    });
+
+    // Trigger keypress sound, animation, OLED, & display input
+    function triggerKeyAction(codeKey, keyEl, evt = null) {
+      if (evt && (codeKey === 'Tab' || codeKey === 'Space' || codeKey.startsWith('Arrow'))) {
+        evt.preventDefault();
+      }
+
+      playMechanicalKeySound();
+
+      if (keyEl) {
+        keyEl.classList.add('active');
+        setTimeout(() => {
+          if (!evt) keyEl.classList.remove('active');
+        }, 120);
+      }
+
+      // Key shortcut mappings to Monitor Views:
+      if (codeKey === 'KeyA') switchMonitorView('about');
+      if (codeKey === 'KeyW') switchMonitorView('work');
+      if (codeKey === 'KeyS') switchMonitorView('stack');
+      if (codeKey === 'KeyC') switchMonitorView('contact');
+      if (codeKey === 'KeyT') switchMonitorView('terminal');
+
+      // Update Key press counter & OLED
+      state.keyPressCount++;
+      if (oledCount) oledCount.textContent = state.keyPressCount;
+
+      let displayKeyLabel = codeKey.replace('Key', '').replace('Digit', '');
+      if (codeKey === 'Space') displayKeyLabel = 'SPACE';
+      if (oledKey) oledKey.textContent = displayKeyLabel.toUpperCase();
+      if (oledCode) oledCode.textContent = evt ? evt.keyCode || '00' : '99';
+
+      handleTextInput(codeKey, evt ? evt.key : null);
+    }
+
+    function handleTextInput(code, char) {
+      if (!typedDisplay) return;
+
+      if (code === 'Backspace') {
+        state.typedText = state.typedText.slice(0, -1);
+      } else if (code === 'Enter') {
+        state.typedText += '\nMJ_KEYBOARD> ';
+      } else if (code === 'Space') {
+        state.typedText += ' ';
+      } else if (code === 'Tab') {
+        state.typedText += '  ';
+      } else if (code === 'Escape') {
+        state.typedText = '';
+      } else if (char && char.length === 1) {
+        state.typedText += char;
+      } else if (code.startsWith('Key')) {
+        state.typedText += code.replace('Key', '');
+      } else if (code.startsWith('Digit')) {
+        state.typedText += code.replace('Digit', '');
+      }
+
+      typedDisplay.textContent = state.typedText;
+    }
+  }
+
+  // =========================================================================
+  // 7. MONITOR TERMINAL LOGIC
+  // =========================================================================
+  function initMonitorTerminal() {
+    const termInput = document.getElementById('monitorTermInput');
+    const termLog = document.getElementById('monitorTermLog');
+    if (!termInput || !termLog) return;
+
+    termInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = termInput.value.trim().toLowerCase();
+        if (!cmd) return;
+
+        const cmdLine = document.createElement('div');
+        cmdLine.className = 'line';
+        cmdLine.innerHTML = `<span class="prompt">C:\\Manjunath&gt;</span> ${cmd}`;
+        termLog.appendChild(cmdLine);
+
+        let resText = '';
+        if (cmd === 'help') {
+          resText = 'Available commands: about, work, stack, contact, clear';
+        } else if (cmd === 'about') {
+          switchMonitorView('about');
+          resText = 'Switched to About Me screen.';
+        } else if (cmd === 'work' || cmd === 'projects') {
+          switchMonitorView('work');
+          resText = 'Switched to Work / Projects screen.';
+        } else if (cmd === 'stack') {
+          switchMonitorView('stack');
+          resText = 'Switched to Tech Stack screen.';
+        } else if (cmd === 'contact') {
+          switchMonitorView('contact');
+          resText = 'Switched to Contact screen.';
+        } else if (cmd === 'clear') {
+          termLog.innerHTML = '';
+          termInput.value = '';
+          return;
+        } else {
+          resText = `Command not recognized: ${cmd}. Type 'help' for commands.`;
+        }
+
+        const resLine = document.createElement('div');
+        resLine.className = 'line cyan';
+        resLine.textContent = resText;
+        termLog.appendChild(resLine);
+
+        termInput.value = '';
+        termLog.scrollTop = termLog.scrollHeight;
+      }
     });
   }
 
