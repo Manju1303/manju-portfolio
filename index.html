@@ -3,19 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RGB Mechanical Keyboard & Desktop Monitor — Manjunath</title>
-  <meta name="description" content="Interactive 75% Mechanical RGB Keyboard simulator with desktop monitor screen displaying About Me, Selected Work, Tech Stack, and Terminal CLI.">
+  <title>Manjunath — 3D AI Workstation Portfolio</title>
+  <meta name="description" content="Interactive 3D AI Workstation Portfolio featuring JARVIS boot intro, 3D mechanical RGB keyboard navigation, monitor screen switcher, and mobile responsive layout.">
 
   <!-- Fonts: Space Grotesk, JetBrains Mono, Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Lucide Icons -->
+  <!-- Lucide Icons & Devicon -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
-  <!-- Three.js for Particle Background -->
+  <!-- Three.js & CSS3DRenderer & GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -26,60 +29,68 @@
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- Background Canvas & Desk Surface -->
-  <canvas id="bgCanvas"></canvas>
-  <div class="desk-surface-overlay"></div>
+  <!-- JARVIS BOOT INTRO OVERLAY -->
+  <div id="bootOverlay" class="boot-overlay">
+    <div class="boot-box">
+      <div class="boot-header">
+        <div class="dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="title">MJ_JARVIS_SYSTEM_v3.0 // BOOT_SEQUENCE</span>
+        <button id="skipIntroBtn" class="skip-btn"><i data-lucide="fast-forward"></i> SKIP INTRO</button>
+      </div>
+      <div class="boot-body" id="bootLog">
+        <div class="line cyan">[SYS_BOOT] INITIALIZING 3D AI WORKSTATION ENGINE...</div>
+        <div class="line">[SYS_CORE] LOADING DATA MATRIX & THREE.JS CANVAS...</div>
+        <div class="line green">[SYS_AUTH] WELCOME, MANJUNATH — AI ENGINEER</div>
+      </div>
+      <div class="boot-progress-bar">
+        <div class="progress-fill" id="bootProgress"></div>
+      </div>
+    </div>
+  </div>
 
-  <!-- TOP HEADER / RGB TOOLBAR -->
+  <!-- TOP APP NAVBAR / WORKSTATION TOOLBAR -->
   <header class="app-header">
     <div class="header-container">
       <div class="brand">
         <div class="brand-icon">
-          <i data-lucide="monitor"></i>
+          <i data-lucide="cpu"></i>
         </div>
         <div class="brand-text">
           <span class="title">MANJUNATH</span>
-          <span class="subtitle">AI ENGINEER · AGENTIC CODER WORKSPACE</span>
+          <span class="subtitle">3D AI WORKSTATION PORTFOLIO</span>
         </div>
       </div>
 
-      <!-- CONTROLS GROUP -->
+      <!-- WORKSTATION CONTROLS -->
       <div class="toolbar-controls">
-        <!-- RGB Mode Selector -->
+        <!-- Hotkey Legend Badges -->
+        <div class="hotkey-strip">
+          <span class="hk-pill active" id="hkAbout"><span class="hk">A</span> ABOUT</span>
+          <span class="hk-pill" id="hkWork"><span class="hk">W</span> WORK</span>
+          <span class="hk-pill" id="hk1to9"><span class="hk">1–9</span> PROJECTS</span>
+          <span class="hk-pill" id="hkStack"><span class="hk">S</span> STACK</span>
+          <span class="hk-pill" id="hkContact"><span class="hk">C</span> CONTACT</span>
+          <span class="hk-pill" id="hkEsc"><span class="hk">ESC</span> RESET CAMERA</span>
+        </div>
+
+        <!-- RGB Select -->
         <div class="control-group">
-          <label class="control-label"><i data-lucide="sparkles"></i> RGB MODE</label>
           <select id="rgbModeSelect" class="select-pill">
             <option value="rainbow">🌈 Rainbow Wave</option>
             <option value="reactive">⚡ Key Reactive</option>
             <option value="cyber">🌌 Cyberpunk Neon</option>
             <option value="matrix">💥 Matrix Green</option>
-            <option value="breathing">🧘 RGB Breathing</option>
             <option value="amber">🔥 Amber Sunset</option>
           </select>
         </div>
 
-        <!-- RGB Light Toggle -->
+        <!-- Sound Profile & Toggle -->
         <div class="control-group">
-          <button id="rgbToggleBtn" class="toggle-pill active" title="Toggle RGB Lighting">
-            <i data-lucide="sun"></i>
-            <span>RGB ON</span>
-          </button>
-        </div>
-
-        <!-- Sound Profile -->
-        <div class="control-group">
-          <label class="control-label"><i data-lucide="volume-2"></i> SWITCH SOUND</label>
-          <select id="soundProfileSelect" class="select-pill">
-            <option value="thock">Thocky Amber</option>
-            <option value="clicky">Blue Clicky</option>
-            <option value="silent">Silent Red</option>
-            <option value="creamy">Creamy Linear</option>
-          </select>
-        </div>
-
-        <!-- Audio Toggle -->
-        <div class="control-group">
-          <button id="audioToggleBtn" class="icon-btn active" title="Toggle Switch Sound">
+          <button id="audioToggleBtn" class="icon-btn active" title="Toggle Mechanical Key Sound">
             <i data-lucide="volume-2" id="audioIcon"></i>
           </button>
         </div>
@@ -87,415 +98,180 @@
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE VIEWPORT -->
-  <main class="workspace-viewport">
-
-    <!-- DESKTOP MONITOR DISPLAY CHASSIS -->
-    <div class="desktop-monitor-chassis">
+  <!-- 3D WORKSTATION VIEWPORT (DESKTOP) -->
+  <main class="workstation-viewport" id="desktopView">
+    
+    <!-- CANVAS CONTAINERS FOR THREE.JS WEBGL + CSS3D -->
+    <div id="canvasContainer" class="canvas-container">
+      <!-- WebGL Canvas for 3D Desk, Keycaps & Lighting -->
+      <canvas id="webglCanvas"></canvas>
       
-      <!-- Monitor Screen Container -->
-      <div class="monitor-screen-bezel">
-        <div class="screen-glass-glare"></div>
+      <!-- CSS3D Overlay Container for Monitor Screen UI -->
+      <div id="css3dContainer"></div>
+    </div>
 
-        <!-- MONITOR SCREEN HEADER / TABS -->
-        <div class="monitor-nav-bar">
-          <div class="monitor-logo">
-            <span class="dot-live"></span>
-            <span>MJ_MONITOR_v3.0</span>
+    <!-- MONITOR HTML CONTENT SURFACE TEMPLATE (Rendered into Monitor Screen) -->
+    <div id="monitorContentTemplate" class="monitor-screen-surface">
+      <div class="monitor-inner-bezel">
+        
+        <!-- Monitor Header / Status Bar -->
+        <div class="monitor-header-bar">
+          <div class="sys-badge">
+            <span class="live-dot"></span>
+            <span>MJ_OS // 3D_WORKSTATION</span>
           </div>
-
-          <div class="monitor-nav-tabs">
-            <button class="nav-tab active" data-view="about" id="tabAboutBtn">
-              <span class="key-badge">A</span> ABOUT ME
-            </button>
-            <button class="nav-tab" data-view="work" id="tabWorkBtn">
-              <span class="key-badge">W</span> WORK
-            </button>
-            <button class="nav-tab" data-view="stack" id="tabStackBtn">
-              <span class="key-badge">S</span> STACK
-            </button>
-            <button class="nav-tab" data-view="contact" id="tabContactBtn">
-              <span class="key-badge">C</span> CONTACT
-            </button>
-            <button class="nav-tab" data-view="terminal" id="tabTerminalBtn">
-              <span class="key-badge">T</span> CLI TERMINAL
-            </button>
+          <div class="nav-shortcuts">
+            <button class="m-tab active" data-target="about"><span class="k">A</span> ABOUT</button>
+            <button class="m-tab" data-target="work"><span class="k">W</span> WORK</button>
+            <button class="m-tab" data-target="stack"><span class="k">S</span> STACK</button>
+            <button class="m-tab" data-target="contact"><span class="k">C</span> CONTACT</button>
+            <button class="m-tab" data-target="terminal"><span class="k">T</span> CLI</button>
           </div>
-
-          <div class="screen-clock" id="screenClock">20:58:56</div>
+          <div class="sys-time" id="monitorClock">21:12:45</div>
         </div>
 
-        <!-- MONITOR CONTENT VIEWS -->
-        <div class="monitor-screen-content">
-
-          <!-- 01 / ABOUT ME VIEW -->
-          <div class="monitor-view active" id="viewAbout">
-            <div class="about-grid">
-              
-              <!-- Left Column: Avatar & Quick Info -->
-              <div class="about-avatar-card">
-                <div class="avatar-frame">
+        <!-- Dynamic Monitor Display Panels -->
+        <div class="monitor-body-panel">
+          
+          <!-- VIEW: ABOUT ME -->
+          <div class="m-view active" id="mViewAbout">
+            <div class="about-flex">
+              <div class="about-avatar-col">
+                <div class="avatar-ring">
                   <div class="avatar-circle">
-                    <!-- Stylized High-Tech AI Developer Portrait Avatar -->
                     <svg viewBox="0 0 100 100" class="avatar-svg">
                       <circle cx="50" cy="50" r="48" fill="#121118" stroke="#00f0ff" stroke-width="2"/>
                       <circle cx="50" cy="38" r="20" fill="#d6a928"/>
                       <path d="M 20 85 C 20 62, 80 62, 80 85 Z" fill="#00f0ff" opacity="0.85"/>
                     </svg>
                   </div>
-                  <div class="avatar-ring-glow"></div>
                 </div>
-                <div class="avatar-status">
-                  <span class="status-dot"></span> AVAILABLE FOR AI ROLES
-                </div>
-                <div class="degree-badge">
-                  <i data-lucide="graduation-cap"></i> B.Tech AI & Data Science
-                </div>
+                <div class="status-pill"><span class="dot"></span> AVAILABLE FOR AI ROLES</div>
+                <div class="degree-pill"><i data-lucide="graduation-cap"></i> B.Tech AI & Data Science</div>
+                <a href="mailto:manjunath.work.ai@gmail.com" class="btn-action primary"><i data-lucide="mail"></i> Email Me</a>
               </div>
 
-              <!-- Right Column: Bio & Competencies -->
-              <div class="about-details-card">
-                <h1 class="about-title">
-                  ABOUT <span class="gradient-text">ME.</span>
-                </h1>
-                <h3 class="about-subtitle">AI & Data Science Engineer</h3>
-
-                <p class="about-bio">
+              <div class="about-text-col">
+                <h1 class="headline">ABOUT <span class="cyan">ME.</span></h1>
+                <h3 class="role-tag">AI &amp; Data Science Engineer</h3>
+                
+                <p class="bio-para">
                   I am an engineering graduate with a <strong>B.Tech in Artificial Intelligence and Data Science</strong>, specializing in architecting scalable AI applications, LLM-powered systems, and intelligent digital products. I combine rigorous machine learning foundations with full-stack web engineering to transform complex algorithms into production-ready software.
                 </p>
 
-                <!-- Core Technical Competencies Table/Grid -->
-                <div class="competencies-block">
-                  <div class="comp-header">
-                    <i data-lucide="shield-check" class="comp-icon"></i>
-                    <span>Core Technical Competencies</span>
-                  </div>
-
-                  <div class="comp-table">
-                    <!-- Row 1 -->
-                    <div class="comp-row">
-                      <div class="comp-category">
-                        <span class="arrow">►</span> AI &amp; LLM Architecture:
-                      </div>
-                      <div class="comp-details">
-                        RAG Systems, Vector DBs (ChromaDB), Semantic Search, Prompt Engineering
-                      </div>
-                    </div>
-
-                    <!-- Row 2 -->
-                    <div class="comp-row">
-                      <div class="comp-category">
-                        <span class="arrow">►</span> Computer Vision &amp; ML:
-                      </div>
-                      <div class="comp-details">
-                        MediaPipe, OpenCV, Real-time Pose &amp; Landmark Estimation, Predictive Analytics
-                      </div>
-                    </div>
-
-                    <!-- Row 3 -->
-                    <div class="comp-row">
-                      <div class="comp-category">
-                        <span class="arrow">►</span> Full-Stack Development:
-                      </div>
-                      <div class="comp-details">
-                        Python, React.js, Node.js, Express, JavaScript (ES6+), HTML5/CSS3
-                      </div>
-                    </div>
-
-                    <!-- Row 4 -->
-                    <div class="comp-row">
-                      <div class="comp-category">
-                        <span class="arrow">►</span> DevOps &amp; Cloud:
-                      </div>
-                      <div class="comp-details">
-                        Docker Containerization, Git/GitHub, Linux/Ubuntu CLI, VPC, Subnets, SSH
-                      </div>
-                    </div>
+                <!-- Core Competencies Block -->
+                <div class="competencies-card">
+                  <div class="card-title"><i data-lucide="shield-check"></i> Core Technical Competencies</div>
+                  <div class="comp-list">
+                    <div class="comp-item"><span class="arr">►</span> <strong>AI &amp; LLM Architecture:</strong> RAG Systems, Vector DBs (ChromaDB), Semantic Search, Prompt Engineering</div>
+                    <div class="comp-item"><span class="arr">►</span> <strong>Computer Vision &amp; ML:</strong> MediaPipe, OpenCV, Real-time Pose &amp; Landmark Estimation, Predictive Analytics</div>
+                    <div class="comp-item"><span class="arr">►</span> <strong>Full-Stack Development:</strong> Python, React.js, Node.js, Express, JavaScript (ES6+), HTML5/CSS3</div>
+                    <div class="comp-item"><span class="arr">►</span> <strong>DevOps &amp; Cloud:</strong> Docker Containerization, Git/GitHub, Linux/Ubuntu CLI, VPC, Subnets, SSH</div>
                   </div>
                 </div>
-
-                <p class="about-footer-note">
-                  My development experience spans the end-to-end AI software lifecycle — from problem formulation, dataset preparation, and RAG retrieval pipelines to interactive WebGL user interfaces.
-                </p>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- 02 / WORK VIEW -->
-          <div class="monitor-view" id="viewWork">
-            <h2 class="view-heading"><i data-lucide="code-2"></i> SELECTED WORK & AI PROJECTS</h2>
-            <div class="work-cards-grid">
-              <div class="work-card">
-                <span class="card-num">01</span>
-                <h4>AURORA</h4>
-                <p>3D Conversational AI Voice Assistant with Avatar Sync & LLM NLP pipeline.</p>
-                <div class="tags"><span>Next.js</span><span>LLM</span><span>Three.js</span></div>
-              </div>
-              <div class="work-card">
-                <span class="card-num">02</span>
-                <h4>MEMORA</h4>
-                <p>Persistent Memory RAG AI Agent utilizing ChromaDB & Vector Embeddings.</p>
-                <div class="tags"><span>Python</span><span>RAG</span><span>ChromaDB</span></div>
-              </div>
-              <div class="work-card">
-                <span class="card-num">03</span>
-                <h4>HEALTHGUARD AI</h4>
-                <p>Healthcare NABH Audit Intelligence Platform with 82.4% compliance score engine.</p>
-                <div class="tags"><span>FastAPI</span><span>React</span><span>PostgreSQL</span></div>
-              </div>
-              <div class="work-card">
-                <span class="card-num">04</span>
-                <h4>PROJECT SENTINEL</h4>
-                <p>Autonomous AI Surveillance Drone with YOLO real-time vision telemetry.</p>
-                <div class="tags"><span>Computer Vision</span><span>YOLO</span><span>Python</span></div>
-              </div>
-              <div class="work-card">
-                <span class="card-num">05</span>
-                <h4>PERSONAL LLM</h4>
-                <p>On-premise zero-data-leakage Ollama instance on high-performance Linux server.</p>
-                <div class="tags"><span>Ollama</span><span>Linux</span><span>LLM</span></div>
-              </div>
-              <div class="work-card">
-                <span class="card-num">06</span>
-                <h4>AIR CANVA</h4>
-                <p>Zero-touch spatial gesture drawing canvas using Computer Vision & MediaPipe.</p>
-                <div class="tags"><span>MediaPipe</span><span>JavaScript</span><span>Canvas</span></div>
               </div>
             </div>
           </div>
 
-          <!-- 03 / STACK VIEW -->
-          <div class="monitor-view" id="viewStack">
-            <h2 class="view-heading"><i data-lucide="cpu"></i> TECH STACK & ENGINEERING ECOSYSTEM</h2>
-            <div class="monitor-stack-grid">
-              <div class="stack-box"><i class="devicon-python-plain colored"></i><span>Python</span></div>
-              <div class="stack-box"><i class="devicon-typescript-plain colored"></i><span>TypeScript</span></div>
-              <div class="stack-box"><i class="devicon-javascript-plain colored"></i><span>JavaScript</span></div>
-              <div class="stack-box"><i class="devicon-react-original colored"></i><span>React.js</span></div>
-              <div class="stack-box"><i class="devicon-nextjs-plain"></i><span>Next.js</span></div>
-              <div class="stack-box"><i data-lucide="zap"></i><span>FastAPI</span></div>
-              <div class="stack-box"><i data-lucide="database"></i><span>ChromaDB</span></div>
-              <div class="stack-box"><i data-lucide="link"></i><span>LangChain</span></div>
-              <div class="stack-box"><i data-lucide="eye"></i><span>OpenCV</span></div>
-              <div class="stack-box"><i data-lucide="hand"></i><span>MediaPipe</span></div>
-              <div class="stack-box"><i data-lucide="server"></i><span>Ollama / LLMs</span></div>
-              <div class="stack-box"><i class="devicon-postgresql-plain colored"></i><span>PostgreSQL</span></div>
-              <div class="stack-box"><i class="devicon-docker-plain colored"></i><span>Docker</span></div>
-              <div class="stack-box"><i data-lucide="box"></i><span>Three.js</span></div>
+          <!-- VIEW: PROJECT INSPECTION (Keys 1-9) -->
+          <div class="m-view" id="mViewProject">
+            <div class="project-detail-card" id="projectCardContent">
+              <!-- Rendered dynamically by app.js -->
             </div>
           </div>
 
-          <!-- 04 / CONTACT VIEW -->
-          <div class="monitor-view" id="viewContact">
-            <h2 class="view-heading"><i data-lucide="mail"></i> GET IN TOUCH WITH MANJUNATH</h2>
-            <p class="contact-intro">Available for full-time AI Engineering roles, LLM/RAG projects, and full-stack technical collaborations.</p>
-            <div class="monitor-contact-grid">
-              <a href="mailto:manjunath.work.ai@gmail.com" class="contact-card-btn">
+          <!-- VIEW: WORK / ALL PROJECTS GRID -->
+          <div class="m-view" id="mViewWork">
+            <h2 class="section-title"><i data-lucide="code-2"></i> SELECTED WORK (Press Keys 1–9 to Inspect)</h2>
+            <div class="work-grid-9" id="workGridContainer">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+
+          <!-- VIEW: STACK -->
+          <div class="m-view" id="mViewStack">
+            <h2 class="section-title"><i data-lucide="cpu"></i> TECH STACK & ECOSYSTEM</h2>
+            <div class="stack-chips-grid">
+              <div class="chip"><i class="devicon-python-plain colored"></i> Python</div>
+              <div class="chip"><i class="devicon-typescript-plain colored"></i> TypeScript</div>
+              <div class="chip"><i class="devicon-javascript-plain colored"></i> JavaScript</div>
+              <div class="chip"><i class="devicon-react-original colored"></i> React.js</div>
+              <div class="chip"><i class="devicon-nextjs-plain"></i> Next.js</div>
+              <div class="chip"><i data-lucide="zap"></i> FastAPI</div>
+              <div class="chip"><i data-lucide="database"></i> ChromaDB</div>
+              <div class="chip"><i data-lucide="link"></i> LangChain</div>
+              <div class="chip"><i data-lucide="eye"></i> OpenCV</div>
+              <div class="chip"><i data-lucide="hand"></i> MediaPipe</div>
+              <div class="chip"><i data-lucide="server"></i> Ollama / LLMs</div>
+              <div class="chip"><i class="devicon-postgresql-plain colored"></i> PostgreSQL</div>
+              <div class="chip"><i class="devicon-docker-plain colored"></i> Docker</div>
+              <div class="chip"><i data-lucide="box"></i> Three.js</div>
+            </div>
+          </div>
+
+          <!-- VIEW: CONTACT -->
+          <div class="m-view" id="mViewContact">
+            <h2 class="section-title"><i data-lucide="mail"></i> GET IN TOUCH</h2>
+            <p class="sub-lead">Have a project, AI role, or engineering query? Let's connect.</p>
+            <div class="contact-cards-row">
+              <a href="mailto:manjunath.work.ai@gmail.com" class="c-card">
                 <i data-lucide="mail"></i>
-                <div class="text">
-                  <span class="label">EMAIL</span>
-                  <span class="val">manjunath.work.ai@gmail.com</span>
-                </div>
+                <div class="info"><span>EMAIL</span><strong>manjunath.work.ai@gmail.com</strong></div>
               </a>
-              <a href="https://github.com/Manju1303" target="_blank" rel="noopener" class="contact-card-btn">
+              <a href="https://github.com/Manju1303" target="_blank" class="c-card">
                 <i data-lucide="github"></i>
-                <div class="text">
-                  <span class="label">GITHUB</span>
-                  <span class="val">github.com/Manju1303</span>
-                </div>
+                <div class="info"><span>GITHUB</span><strong>github.com/Manju1303</strong></div>
               </a>
-              <a href="https://www.linkedin.com/in/manjunath-manjunath-248594352" target="_blank" rel="noopener" class="contact-card-btn">
+              <a href="https://www.linkedin.com/in/manjunath-manjunath-248594352" target="_blank" class="c-card">
                 <i data-lucide="linkedin"></i>
-                <div class="text">
-                  <span class="label">LINKEDIN</span>
-                  <span class="val">linkedin.com/in/manjunath</span>
-                </div>
+                <div class="info"><span>LINKEDIN</span><strong>linkedin.com/in/manjunath</strong></div>
               </a>
             </div>
           </div>
 
-          <!-- 05 / CLI TERMINAL VIEW -->
-          <div class="monitor-view" id="viewTerminal">
-            <div class="terminal-monitor-box">
-              <div class="term-log" id="monitorTermLog">
-                <div class="line cyan">Manjunath's Interactive CLI Monitor Terminal v3.0</div>
-                <div class="line">Type <span class="highlight">help</span>, <span class="highlight">about</span>, <span class="highlight">projects</span>, <span class="highlight">stack</span>, or <span class="highlight">clear</span>.</div>
+          <!-- VIEW: CLI TERMINAL -->
+          <div class="m-view" id="mViewTerminal">
+            <div class="cli-box">
+              <div class="cli-log" id="cliLog">
+                <div class="line cyan">MJ_WORKSTATION_CLI v3.0 [Type 'help', 'about', '1-9', 'clear']</div>
               </div>
-              <div class="term-input-line">
-                <span class="prompt">C:\Manjunath&gt;</span>
-                <input type="text" id="monitorTermInput" placeholder="Type command here..." autofocus>
+              <div class="cli-input-row">
+                <span class="p">C:\Manjunath&gt;</span>
+                <input type="text" id="cliInput" placeholder="Type command..." autofocus>
               </div>
             </div>
           </div>
 
         </div>
 
-        <!-- MONITOR BOTTOM CHASSIS & POWER LIGHT -->
-        <div class="monitor-bottom-bar">
-          <div class="brand-badge">MANJUNATH DISPLAY 4K</div>
-          <div class="power-btn">
-            <span class="power-led"></span> POWER
-          </div>
-        </div>
-
-      </div>
-
-      <!-- MONITOR METALLIC STAND -->
-      <div class="monitor-stand-neck"></div>
-      <div class="monitor-stand-base"></div>
-    </div>
-
-    <!-- LIVE TYPING DISPLAY STRIP -->
-    <div class="typing-display-card">
-      <div class="display-header">
-        <div class="header-tag"><i data-lucide="keyboard"></i> LIVE KEYBOARD INPUT DISPLAY</div>
-        <div class="header-actions">
-          <button id="clearTextBtn" class="small-btn"><i data-lucide="trash-2"></i> CLEAR</button>
-        </div>
-      </div>
-      <div class="display-body">
-        <span class="prompt-prefix">MJ_KEYBOARD&gt;</span>
-        <span id="typedTextDisplay" class="typed-text"></span>
-        <span class="blinking-cursor">█</span>
-      </div>
-    </div>
-
-    <!-- MECHANICAL KEYBOARD CHASSIS -->
-    <div class="keyboard-chassis" id="keyboardChassis">
-      
-      <!-- Ambient RGB Underglow Border -->
-      <div class="rgb-underglow"></div>
-
-      <!-- OLED STATUS DISPLAY PANEL (Top Right of Bezel) -->
-      <div class="oled-panel">
-        <div class="oled-row">
-          <span class="oled-label">KEY:</span>
-          <span class="oled-value" id="oledKey">A</span>
-        </div>
-        <div class="oled-row">
-          <span class="oled-label">CODE:</span>
-          <span class="oled-value" id="oledCode">65</span>
-        </div>
-        <div class="oled-row">
-          <span class="oled-label">VIEW:</span>
-          <span class="oled-value" id="oledRgb">ABOUT</span>
-        </div>
-        <div class="oled-row">
-          <span class="oled-label">COUNT:</span>
-          <span class="oled-value" id="oledCount">0</span>
-        </div>
-      </div>
-
-      <!-- KEYCAPS GRID (75% LAYOUT) -->
-      <div class="keycaps-container">
-
-        <!-- ROW 1: ESC + FUNCTION ROW -->
-        <div class="key-row row-1">
-          <div class="keykey key-esc accent-amber" data-key="Escape"><span class="legend">ESC</span></div>
-          <div class="keykey" data-key="F1"><span class="legend">F1</span></div>
-          <div class="keykey" data-key="F2"><span class="legend">F2</span></div>
-          <div class="keykey" data-key="F3"><span class="legend">F3</span></div>
-          <div class="keykey" data-key="F4"><span class="legend">F4</span></div>
-          <div class="keykey" data-key="F5"><span class="legend">F5</span></div>
-          <div class="keykey" data-key="F6"><span class="legend">F6</span></div>
-          <div class="keykey" data-key="F7"><span class="legend">F7</span></div>
-          <div class="keykey" data-key="F8"><span class="legend">F8</span></div>
-          <div class="keykey" data-key="F9"><span class="legend">F9</span></div>
-          <div class="keykey" data-key="F10"><span class="legend">F10</span></div>
-          <div class="keykey" data-key="F11"><span class="legend">F11</span></div>
-          <div class="keykey" data-key="F12"><span class="legend">F12</span></div>
-          <div class="keykey key-sm" data-key="Delete"><span class="legend">DEL</span></div>
-          <div class="keykey key-sm accent-cyan" data-key="PrintScreen"><span class="legend">RGB</span></div>
-        </div>
-
-        <!-- ROW 2: NUMBER ROW -->
-        <div class="key-row row-2">
-          <div class="keykey" data-key="Backquote"><span class="sub">~</span><span class="legend">`</span></div>
-          <div class="keykey" data-key="Digit1"><span class="sub">!</span><span class="legend">1</span></div>
-          <div class="keykey" data-key="Digit2"><span class="sub">@</span><span class="legend">2</span></div>
-          <div class="keykey" data-key="Digit3"><span class="sub">#</span><span class="legend">3</span></div>
-          <div class="keykey" data-key="Digit4"><span class="sub">$</span><span class="legend">4</span></div>
-          <div class="keykey" data-key="Digit5"><span class="sub">%</span><span class="legend">5</span></div>
-          <div class="keykey" data-key="Digit6"><span class="sub">^</span><span class="legend">6</span></div>
-          <div class="keykey" data-key="Digit7"><span class="sub">&amp;</span><span class="legend">7</span></div>
-          <div class="keykey" data-key="Digit8"><span class="sub">*</span><span class="legend">8</span></div>
-          <div class="keykey" data-key="Digit9"><span class="sub">(</span><span class="legend">9</span></div>
-          <div class="keykey" data-key="Digit0"><span class="sub">)</span><span class="legend">0</span></div>
-          <div class="keykey" data-key="Minus"><span class="sub">_</span><span class="legend">-</span></div>
-          <div class="keykey" data-key="Equal"><span class="sub">+</span><span class="legend">=</span></div>
-          <div class="keykey key-backspace key-wide-2" data-key="Backspace"><span class="legend">BACKSPACE</span></div>
-        </div>
-
-        <!-- ROW 3: QWERTY -->
-        <div class="key-row row-3">
-          <div class="keykey key-tab key-wide-1-5" data-key="Tab"><span class="legend">TAB</span></div>
-          <div class="keykey" data-key="KeyQ"><span class="legend">Q</span></div>
-          <div class="keykey accent-amber" data-key="KeyW" title="[W] WORK VIEW"><span class="sub">WORK</span><span class="legend">W</span></div>
-          <div class="keykey" data-key="KeyE"><span class="legend">E</span></div>
-          <div class="keykey" data-key="KeyR"><span class="legend">R</span></div>
-          <div class="keykey accent-cyan" data-key="KeyT" title="[T] CLI TERMINAL"><span class="sub">CLI</span><span class="legend">T</span></div>
-          <div class="keykey" data-key="KeyY"><span class="legend">Y</span></div>
-          <div class="keykey" data-key="KeyU"><span class="legend">U</span></div>
-          <div class="keykey" data-key="KeyI"><span class="legend">I</span></div>
-          <div class="keykey" data-key="KeyO"><span class="legend">O</span></div>
-          <div class="keykey" data-key="KeyP"><span class="legend">P</span></div>
-          <div class="keykey" data-key="BracketLeft"><span class="sub">{</span><span class="legend">[</span></div>
-          <div class="keykey" data-key="BracketRight"><span class="sub">}</span><span class="legend">]</span></div>
-          <div class="keykey key-wide-1-5" data-key="Backslash"><span class="sub">|</span><span class="legend">\</span></div>
-        </div>
-
-        <!-- ROW 4: ASDF / HOME ROW -->
-        <div class="key-row row-4">
-          <div class="keykey key-caps key-wide-1-75" data-key="CapsLock"><span class="legend">CAPS</span></div>
-          <div class="keykey accent-amber" data-key="KeyA" id="keyAboutBtn" title="[A] ABOUT ME"><span class="sub">ABOUT</span><span class="legend">A</span></div>
-          <div class="keykey accent-amber" data-key="KeyS" title="[S] TECH STACK"><span class="sub">STACK</span><span class="legend">S</span></div>
-          <div class="keykey" data-key="KeyD"><span class="legend">D</span></div>
-          <div class="keykey" data-key="KeyF"><span class="legend">F</span></div>
-          <div class="keykey" data-key="KeyG"><span class="legend">G</span></div>
-          <div class="keykey" data-key="KeyH"><span class="legend">H</span></div>
-          <div class="keykey" data-key="KeyJ"><span class="legend">J</span></div>
-          <div class="keykey" data-key="KeyK"><span class="legend">K</span></div>
-          <div class="keykey" data-key="KeyL"><span class="legend">L</span></div>
-          <div class="keykey" data-key="Semicolon"><span class="sub">:</span><span class="legend">;</span></div>
-          <div class="keykey" data-key="Quote"><span class="sub">"</span><span class="legend">'</span></div>
-          <div class="keykey key-enter key-wide-2-25 accent-amber" data-key="Enter"><span class="legend">ENTER</span></div>
-        </div>
-
-        <!-- ROW 5: ZXCV / SHIFT ROW -->
-        <div class="key-row row-5">
-          <div class="keykey key-shift-left key-wide-2-25" data-key="ShiftLeft"><span class="legend">SHIFT</span></div>
-          <div class="keykey" data-key="KeyZ"><span class="legend">Z</span></div>
-          <div class="keykey" data-key="KeyX"><span class="legend">X</span></div>
-          <div class="keykey accent-amber" data-key="KeyC" title="[C] CONTACT"><span class="sub">CONTACT</span><span class="legend">C</span></div>
-          <div class="keykey" data-key="KeyV"><span class="legend">V</span></div>
-          <div class="keykey" data-key="KeyB"><span class="legend">B</span></div>
-          <div class="keykey" data-key="KeyN"><span class="legend">N</span></div>
-          <div class="keykey" data-key="KeyM"><span class="legend">M</span></div>
-          <div class="keykey" data-key="Comma"><span class="sub">&lt;</span><span class="legend">,</span></div>
-          <div class="keykey" data-key="Period"><span class="sub">&gt;</span><span class="legend">.</span></div>
-          <div class="keykey" data-key="Slash"><span class="sub">?</span><span class="legend">/</span></div>
-          <div class="keykey key-shift-right key-wide-2-75" data-key="ShiftRight"><span class="legend">SHIFT</span></div>
-        </div>
-
-        <!-- ROW 6: SPACE & MODIFIERS & ARROWS -->
-        <div class="key-row row-6">
-          <div class="keykey key-wide-1-25" data-key="ControlLeft"><span class="legend">CTRL</span></div>
-          <div class="keykey key-wide-1-25" data-key="MetaLeft"><span class="legend">WIN</span></div>
-          <div class="keykey key-wide-1-25" data-key="AltLeft"><span class="legend">ALT</span></div>
-          <div class="keykey key-spacebar" data-key="Space"><span class="legend">SPACEBAR</span></div>
-          <div class="keykey key-wide-1-25" data-key="AltRight"><span class="legend">ALT</span></div>
-          <div class="keykey key-wide-1-25 accent-cyan" data-key="Fn"><span class="legend">FN</span></div>
-          <div class="keykey key-wide-1-25" data-key="ControlRight"><span class="legend">CTRL</span></div>
-          <div class="keykey key-arrow" data-key="ArrowLeft"><span class="legend">←</span></div>
-          <div class="keykey key-arrow" data-key="ArrowUp"><span class="legend">↑</span></div>
-          <div class="keykey key-arrow" data-key="ArrowDown"><span class="legend">↓</span></div>
-          <div class="keykey key-arrow" data-key="ArrowRight"><span class="legend">→</span></div>
+        <!-- Monitor Footer -->
+        <div class="monitor-footer-bar">
+          <span class="m-brand">MANJUNATH 3D WORKSTATION 4K</span>
+          <span class="m-status"><span class="dot green"></span> ONLINE</span>
         </div>
 
       </div>
     </div>
   </main>
+
+  <!-- MOBILE FALLBACK VIEWPORT (Bypasses 3D WebGL for fast mobile loading) -->
+  <div id="mobileFallbackContainer" class="mobile-viewport">
+    <div class="mobile-header">
+      <h2>MANJUNATH</h2>
+      <p>AI Engineer · Agentic Coder</p>
+    </div>
+    
+    <div class="mobile-about-card">
+      <h3>ABOUT ME</h3>
+      <p>B.Tech in Artificial Intelligence and Data Science. Specializing in AI agents, LLMs, RAG pipelines, and computer vision software.</p>
+      <a href="mailto:manjunath.work.ai@gmail.com" class="mobile-btn"><i data-lucide="mail"></i> Contact Me</a>
+    </div>
+
+    <h3 class="mobile-sec-title">PROJECTS (1–9)</h3>
+    <div class="mobile-grid" id="mobileGrid">
+      <!-- Rendered dynamically by app.js -->
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
